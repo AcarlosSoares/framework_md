@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% from "macros.html" import render_field, render_select_field2, render_picture_field %}
+{% block content %}
+
+  <div class="row align-items-center justify-content-center">
+    <div class="content-section col-md-10">
+
+      <div class="panel-body">
+
+        <div class="modal-body">
+
+          <form action="" method="POST">
+          {{ form.csrf_token }}
+
+            <fieldset class="form-group">
+
+              <legend class="border-bottom mb-4">
+
+                {% if title %} {{ title }}
+                {% else %} Título
+                {% endif %}
+
+                <button type="button" class="close" onclick="window.location.href = '{{ url_for('conta.acessar') }}';">
+                &times;
+                </button>
+
+              </legend>
+
+              <div class="content-section bg-light rounded-lg">
+                <div class="row mb-2">
+                  <div class="col-sm-4">
+                    {{ render_field(form.nomeusuario) }}
+                  </div>
+                  <div class="col-sm-8">
+                    {{ render_field(form.email) }}
+                  </div>
+                  <div class="col-sm-6">
+                    {{ render_field(form.senha) }}
+                  </div>
+                  <div class="col-sm-6">
+                    {{ render_field(form.confirmasenha) }}
+                  </div>
+                </div>
+              </div>
+
+              <br><h4>Dados do Usuário da Conta</h4><br>
+
+              <div class="content-section bg-light rounded-lg">
+                <div class="row mb-2">
+                    <div class="col-sm-7">
+                      {{ render_field(form.nomecompleto) }}
+                    </div>
+                    <div class="col-sm-5">
+                      {{ render_field(form.nomeguerra) }}
+                    </div>
+                    <div class="col-sm-6">
+                      {{ render_field(form.datanascimento) }}
+                    </div>
+                    <div class="col-sm-6">
+                      {{ render_field(form.matricula) }}
+                    </div>
+                    <div class="col-sm-4">
+                      {{ render_field(form.cpf) }}
+                    </div>
+                    <div class="col-sm-8">
+                      {{ render_picture_field(form.foto) }}
+                    </div>
+                    <div class="col-sm-12">
+                      {{ render_select_field2(form.setor_id) }}
+                    </div>
+                </div>
+              </div>
+
+            </fieldset>
+
+            <div class="modal-footer">
+              <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

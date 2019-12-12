@@ -1,0 +1,23 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+mysqlclient = {path = "./mysqlclient-1.4.2-cp37-cp37m-win_amd64.whl"}
+flask-material = "*"
+reportlab = "*"
+flask-mail = "*"
+pillow = "*"
+flask-login = "*"
+flask-bcrypt = "*"
+flask-sqlalchemy = "*"
+flask-wtf = "*"
+flask = "*"
+update = "*"
+werkzeug = "*"
+
+[requires]
+python_version = "3.7"

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Aplicativo Modelo</h1>
+    <h3>Aplicativo que servirá de modelo para o desenvolvimento de novos aplicativo web utilizando o framework Flask!</h3><br><br>
+    <h3> Passos para a inicialização:</h3><br>
+    <ol>
+      <li>Instalar o Pipenv: pip install pipenv</li>
+      <li>Criar uma nova pasta: md nova_pasta</li>
+      <li>Copiar o conteúdo do projeto 'framework' para a nova_pasta</li>
+      <li>Entrar na nova pasta: cd nova_pasta</li>
+      <li>Criar uma ambiente virtual para o projeto: pipenv install</li>
+      <li>Acessar o ambiente virtual: pipenv shell</li>
+      <li>Instalar os pacotes do projeto:
+        <ul>
+          <li> pipenv install flask</li>
+          <li> pipenv install flask-wtf</li>
+          <li> pipenv install flask-sqlalchemy</li>
+          <li> pipenv install flask-bcrypt</li>
+          <li> pipenv install flask-login</li>
+          <li> pipenv install Pillow</li>
+          <li> pipenv install flask-mail</li>
+          <li> pipenv install mysqlclient-1.4.2-cp37-cp37m-win_amd64.whl</li>
+          <li> pipenv install reportlab</li>
+        </ul>
+      </li>
+      <li>Cria um novo Schema no Mysql com o nome do projeto:
+        <ul>
+          <li>DROP SCHEMA IF EXISTS `db_nome_do_projeto` ;</li>
+          <li>CREATE SCHEMA IF NOT EXISTS `db_nome_do_projeto` DEFAULT CHARACTER SET utf8 ;</li>
+        </ul>
+      </li>
+      <li>Criar as tabelas no Schema `db_nome_do_projeto`:
+        <ul>
+          <li>Editar o programa: create_db.py</li>
+          <li>Ajustar o parâmetro: 'SQLALCHEMY_DATABASE_URI'
+          <li>Executar o programa: python create_db.py</li>
+        </ul>
+      </li>
+      <li>Entrar na pasta app: cd app</li>
+      <li>Ajustar as configuração do banco de dados no arquivo config.py</li>
+      <li>Executar o aplicativo: python run.py</li>
+      <li>Acessar o aplicativo no browser pelo endereço: http://127.0.0.1:5000</li>
+    </ol><br><br>
+{% endblock content %}

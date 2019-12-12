@@ -1,0 +1,155 @@
+{% extends "layout.html" %}
+{% block content %}
+
+	<div class="content-section">
+		<div class="row">
+			<div class="col md-12">
+
+				<!-- Título  -->
+				<h2>
+					{{ title }}
+				</h2>
+
+				<!-- Painel de Ordenação e Pesquisa -->
+				<form action="{{ url_for('grupo.acessarGrupo') }}" method="POST">
+					{{ form.csrf_token }}
+
+					<div class="container bg-light border rounded-lg">
+					  <div class="row mb-2">
+
+					    <div class="col-sm-4">
+					      {{ form.ordenarpor_tabela1.label(class="form-control-label") }}
+					      <div class="row">
+					      	<div class="col-sm-8">
+							      {{ form.ordenarpor_tabela1(class="form-control form-control-lm") }}
+							    </div>
+					      	<div class="col-sm-4">
+							      {{ form.ordem_tabela1(class="form-control form-control-lm") }}
+							    </div>
+					      </div>
+					    </div>
+
+					    <div class="col-sm-8">
+					      {{ form.pesquisarpor_tabela1.label(class="form-control-label") }}
+					      <div class="row">
+					      	<div class="col-sm-8">
+							      {{ form.pesquisarpor_tabela1(class="form-control form-control-lm") }}
+							    </div>
+							    <div class="col-sm-2">
+							      {{ form.submit_enviar_tabela1(class="btn btn-outline-info") }}
+					      	</div>
+									<div class="col-sm-2">
+							      {{ form.submit_limpar_tabela1(class="btn btn-outline-info") }}
+					      	</div>
+					      </div>
+					    </div>
+
+					  </div>
+					</div>
+
+					<!-- Painel Paginação e Botões Imprimir e Novo -->
+					<div>
+						{% for page_num in dados.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+						  {% if page_num %}
+						    {% if dados.page == page_num %}
+						      <input class="btn btn-info my-2" name="page" type="submit" value={{ page_num }} />
+						    {% else %}
+						      <input class="btn btn-outline-info my-2" name="page" type="submit" value={{ page_num }} />
+						    {% endif %}
+						  {% else %}
+						    ...
+						  {% endif %}
+						{% endfor %}
+
+						<!-- Botão Novo -->
+						<a href="{{ url_for('grupo.incluirGrupo') }}" class="btn btn-ligth btn-sm float-sm-right my-2 mx-2" aria-label="Incluir" aria-pressed="true" alt="Novo" title="Novo">
+						  <i class="material-icons cor-verde">note_add</i>
+						</a>
+
+						<!-- Botão Imprimir -->
+						<a href="{{ url_for('grupo.imprimir') }}" class="btn btn-ligth btn-sm float-sm-right my-2" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
+						  <i class="material-icons cor-marrom">print</i>
+						</a>
+
+				</form>
+
+				<!-- Tabela de Listagem dos Dados -->
+				<div class="table-responsive">
+
+					<table style="width:100%" class="table table-sm bg-light table-bordered" cellspacing="0" width="100%">
+
+						<!-- Cabeçalho da Tabela -->
+						<thead class="thead-dark">
+							<tr>
+								<th class="text-center" style="width: 30px">Seq</th>
+								<th class="text-center" style="width: 500px">Nome do Grupo</th>
+								<th class="text-center" style="width: 120px">Ação</th>
+							</tr>
+						</thead>
+
+						<!-- Detalhe da Tabela -->
+						<tbody>
+							{% for dado in dados.items %}
+
+								<tr>
+									<td style="vertical-align:middle">{{ dado.id }}</td>
+									<td style="vertical-align:middle">{{ dado.nome }}</td>
+
+									<td class="text-center">
+
+										<!-- Botão Alterar -->
+										<a href="{{ url_for('grupo.alterarGrupo', id_data=dado.id) }}" class="btn btn-ligth btn-sm" role="button" aria-label="Alterar" aria-pressed="true" title="Alterar">
+										  <i class="material-icons cor-azul" style="vertical-align:middle;">create</i>
+										</a>
+
+										<!-- Botão Excluir -->
+										<a href="#" class="btn btn-ligth btn-sm" role="button" aria-label="Excluir" aria-pressed="true" data-toggle="modal" title="Excluir" data-target="#excluirModal{{ dado.id }}">
+										  <i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
+										</a>
+
+										<!-- Botão Contas -->
+										<a href="{{ url_for('grupo.acessarConta', id_super=dado.id, nome_super=dado.nome) }}" class="btn btn-ligth btn-sm" role="button" aria-label="Alterar" aria-pressed="true" title="Contas" >
+										  <i class="material-icons cor-roxa" style="vertical-align:middle;">post_add</i>
+										</a>
+
+									</td>
+								</tr>
+
+			          <!-- Modal Excluir Dados -->
+			          <div class="modal fade" id="excluirModal{{ dado.id }}">
+			            <div class="modal-dialog modal-dialog-centered" role="document">
+			              <div class="modal-content">
+
+			                <div class="modal-header">
+			                  <h5 class="modal-title" id="exampleModalLongTitle">Excluir Registro</h5>
+			                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                    <span aria-hidden="true">&times;</span>
+			                  </button>
+			                </div>
+
+			                <div class="modal-body">
+			                  <p>Confirma a exclusão: {{ dado.nome }}? </p>
+			                </div>
+
+			                <div class="modal-footer">
+			                  <form action="{{ url_for('grupo.excluirGrupo', id_data=dado.id) }}" method="POST">
+			                  	{{ form.csrf_token }}
+			                    <input type="submit" value="Sim" class="btn btn-outline-info">
+			                  </form>
+			                </div>
+
+			              </div>
+			            </div>
+			          </div>
+			          <!-- Fim Modal Excluir Dados -->
+
+							{% endfor  %}
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}

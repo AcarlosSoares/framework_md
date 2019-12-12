@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!--Import materialize.css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous">
+  </script>
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  {% if title %}
+      <title>Projeto FrameWork - {{ title }}</title>
+  {% else %}
+      <title>Projeto FrameWork</title>
+  {% endif %}
+
+</head>
+
+<body id="home" class="scrollspy">
+
+  <header>
+
+    <!-- Navbar -->
+    <div class="navbar-fixed">
+
+      <!-- Dropdown Structure -->
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="{{ url_for('grupo.acessarGrupo') }}" class="dropdown-item">Grupos</a></li>
+        <li><a href="{{ url_for('conta.acessar') }}" class="dropdown-item">Contas</a></li>
+        <li><a href="{{ url_for('setor.acessar') }}" class="dropdown-item">Setor</a></li>
+        <li class="divider"></li>
+        <li><a href="{{ url_for('auth.register') }}" class="dropdown-item">Registro</a></li>
+      </ul>
+
+      <nav class="grey darken-3">
+
+        <div class="container">
+
+          <div class="nav-wrapper">
+
+            <a href="#" class="brand-logo">Projeto FrameWork</a>
+
+            <a href="#" data-target="mobile-nav" class="sidenav-trigger">
+              <i class="material-icons">menu</i>
+            </a>
+
+            <ul class="right hide-on-med-and-down">
+
+              <li><a href="{{ url_for('principal.inicio') }}">Home</a></li>
+
+              {% if current_user.is_authenticated %}
+                {% if current_user.has_role('Administradores') %}
+                  <!-- Dropdown Trigger -->
+                  <li>
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown1">Administração
+                      <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if current_user.has_role('Diretores') %}
+                  <!-- Dropdown Trigger -->
+                  <li>
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown2">Diretores
+                      <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% if current_user.has_role('Gerentes') %}
+                  <!-- Dropdown Trigger -->
+                  <li>
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown3">Gerentes
+                      <i class="material-icons right">arrow_drop_down</i>
+                    </a>
+                  </li>
+                {% endif %}
+              {% endif %}
+
+              {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('auth.account') }}" class="nav-item nav-link">Conta</a></li>
+                <li><a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Logout</a></li>
+              {% else %}
+                <li><a href="{{ url_for('auth.login') }}" class="nav-item nav-link">Login</a></li>
+                <li><a href="{{ url_for('auth.register') }}" class="nav-item nav-link">Registro</a></li>
+              {% endif %}
+
+              <li><a href="{{ url_for('principal.sobre') }}" class="nav-item nav-link">Sobre</a></li>
+
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <ul class="sidenav" id="mobile-nav">
+      <li>
+        <a href="#home">Home</a>
+      </li>
+      <li>
+        <a href="#search">Search</a>
+      </li>
+      <li>
+        <a href="#popular">Popular Places</a>
+      </li>
+      <li>
+        <a href="#gallery">Gallery</a>
+      </li>
+      <li>
+        <a href="#contact">Contact</a>
+      </li>
+    </ul>
+
+  </header>
+
+  <main role="main" class="container">
+
+    <div class="row s12 m12 l12">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div>
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </div>
+  </main>
+
+  <!--JavaScript at end of body for optimized loading-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+  <script>
+    // Sidenav
+    const sideNav = document.querySelector('.sidenav');
+    M.Sidenav.init(sideNav, {});
+
+    // ScrollSpy
+    const ss = document.querySelectorAll('.scrollspy');
+    M.ScrollSpy.init(ss, {});
+
+    // DropDown
+    var dropdowns = document.querySelectorAll('.dropdown-trigger')
+    for (var i = 0; i < dropdowns.length; i++){
+        M.Dropdown.init(dropdowns[i]);
+    }
+
+
+
+  </script>
+</body>
+
+</html>

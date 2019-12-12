@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+
+  <form action="" method="POST">
+    {{ form.hidden_tag() }}
+
+    <div class="col s12 m6 offset-m3">
+
+      <div class="card z-depth-4">
+
+        <div class="card-content grey darken-3 white-text">
+          <span class="card-title">{{ title }}</span>
+        </div>
+
+        <div class="card-content white dark-4">
+
+          <div class="input-field">
+            {{ form.email.label }}
+            {% if form.email.errors %}
+                {{ form.email }}
+                <div class="invalid">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.email }}
+            {% endif %}
+          </div><br>
+
+          <div class="form-group">
+            {{ form.submit(class="waves-effect waves-light btn grey darken-1") }}
+            <span class="text-muted ml-2">
+              Já possue uma conta? <a href="{{ url_for('auth.login') }}"><span style="color:gray; font-size:80%;">Acesse aqui</span></a>
+            </span>
+          </div>
+      </div>
+    </div>
+
+  </form>
+
+{% endblock content %}

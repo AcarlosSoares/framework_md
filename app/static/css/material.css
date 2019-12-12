@@ -1,0 +1,54 @@
+/* Após alterar Clear Cache: ctrl+shift+R ou ctrl+F5 */
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 30px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    color: rgba(0, 0, 0, 0.54);
+    text-align: center;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+/* Paleta de cores: https://www.w3schools.com/colors/colors_names.asp */
+i.material-icons{
+    font-size:30px;
+    color:DimGrey;
+}
+
+i.material-icons.cor-marrom{
+    color:SaddleBrown;
+}
+
+i.material-icons.cor-verde{
+    color:SeaGreen;
+}
+
+i.material-icons.cor-vermelho{
+    color:#ff3333;
+}
+
+i.material-icons.cor-azul{
+    color:#2e2ed1;
+}
+
+i.material-icons.cor-roxa{
+    color:RebeccaPurple;
+}

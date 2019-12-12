@@ -1,0 +1,176 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!--------------------------- LISTA DA TABELAS DE ASSOCIAÇÃO -------------------------->
+
+<!-- Título  -->
+<h2>
+	{{ title1 }}
+</h2>
+
+<!-- Sub-Título  -->
+<h3>
+	Grupo: {{ nome_super }}
+
+	<!-- Botão Voltar -->
+  <a href="{{ url_for('grupo.acessarGrupo') }}" class="btn btn-outline-info float-md-right my-2" role="button" aria-pressed="true">Voltar</a>
+
+</h3><br>
+
+<div class="container">
+
+	<div class="content-section col-md-12">
+
+<!----------------------- LISTA DA TABELA 2 -------------------------->
+		<div class="wrap">
+
+			<!-- Painel de Ordenação e Pesquisa -->
+			<form action="{{ url_for('grupo.acessarGrupo', id_super=id_super, nome_super=nome_super) }}" method="POST">
+
+				<!-- Painel Paginação e Botões Imprimir -->
+				<div>
+					{% for page_num2 in dados2.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+					  {% if page_num2 %}
+					    {% if dados2.page == page_num2 %}
+					      <input class="btn btn-info my-2" name="page2" type="submit" value={{ page_num2 }} />
+					    {% else %}
+					      <input class="btn btn-outline-info my-2" name="page2" type="submit" value={{ page_num2 }} />
+					    {% endif %}
+					  {% else %}
+					    ...
+					  {% endif %}
+					{% endfor %}
+
+				</div>
+
+			</form>
+
+			<!-- Tabela de Listagem dos Dados -->
+			<table style="width:100%" class="table table-sm bg-light table-bordered" cellspacing="0">
+
+				<!-- Cabeçalho da Tabela -->
+				<thead class="thead-dark">
+					<tr>
+						<th class="text-center" style="width: 30px">Seq</th>
+						<th class="text-center" style="width: 600px">Contas</th>
+						<th class="text-center" style="width: 60px">Ação</th>
+					</tr>
+				</thead>
+
+				<!-- Detalhe da Tabela -->
+				<tbody>
+					{% for dado in dados2.items %}
+
+						<tr>
+							<td style="vertical-align:middle">{{ dado.id }}</td>
+							<td style="vertical-align:middle">{{ dado.usuario }}</td>
+							<td class="text-center">
+
+								<!-- Botão Adicionar -->
+								<a href="{{ url_for('grupo.adicionarConta', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm" value="Adicionar" aria-label="Adicionar" aria-pressed="true" alt="Adicionar" title="Adicionar">
+								  <i class="material-icons cor-verde" style="vertical-align:middle;">add</i>
+								</a>
+
+							</td>
+						</tr>
+
+					{% endfor  %}
+				</tbody>
+			</table>
+		</div>
+
+	<!----------------------- LISTA DA TABELA 1 -------------------------->
+		<div class="wrap">
+
+			<!-- Painel de Ordenação e Pesquisa -->
+			<form action="{{ url_for('grupo.acessarConta', id_super=id_super, nome_super=nome_super) }}" method="POST">
+				{{ form.csrf_token }}
+
+				<!-- Painel Paginação e Botões Imprimir -->
+				<div>
+					{% for page_num in dados1.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+					  {% if page_num %}
+					    {% if dados1.page == page_num %}
+					      <input class="btn btn-info my-2" name="page1" type="submit" value={{ page_num }} />
+					    {% else %}
+					      <input class="btn btn-outline-info my-2" name="page1" type="submit" value={{ page_num }} />
+					    {% endif %}
+					  {% else %}
+					    ...
+					  {% endif %}
+					{% endfor %}
+
+		      <!-- Botão Imprimir -->
+					<a href="{{ url_for('grupo.imprimir2', id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm float-sm-right" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
+					  <i class="material-icons cor-marrom">print</i>
+					</a>
+
+				</div>
+
+			</form>
+
+			<!-- Tabela de Listagem dos Dados -->
+			<table style="width:100%" class="table table-sm bg-light table-bordered" cellspacing="0">
+
+				<!-- Cabeçalho da Tabela -->
+				<thead class="thead-dark">
+					<tr>
+						<th class="text-center" style="width: 30px">Seq</th>
+						<th class="text-center" style="width: 600px">Contas Por Grupo</th>
+						<th class="text-center" style="width: 60px">Ação</th>
+					</tr>
+				</thead>
+
+				<!-- Detalhe da Tabela -->
+				<tbody>
+					{% for dado in dados1.items %}
+
+						<tr>
+							<td style="vertical-align:middle">{{ dado.id }}</td>
+							<td style="vertical-align:middle">{{ dado.usuario }}</td>
+							<td class="text-center">
+
+								<!-- Botão Excluir -->
+								<a href="#" class="btn btn-ligth btn-sm" role="button" aria-label="Excluir" aria-pressed="true" data-toggle="modal" title="Excluir" data-target="#excluirModal1{{ dado.id }}">
+								  <i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
+								</a>
+
+							</td>
+						</tr>
+
+	          <!-- Modal Excluir Dados -->
+	          <div class="modal fade" id="excluirModal1{{ dado.id }}">
+	            <div class="modal-dialog modal-dialog-centered" role="document">
+	              <div class="modal-content">
+
+	                <div class="modal-header">
+	                  <h5 class="modal-title" id="exampleModalLongTitle">Excluir Registro</h5>
+	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                  </button>
+	                </div>
+
+	                <div class="modal-body">
+	                  <p>Confirma a exclusão: {{ dado.usuario }}? </p>
+	                </div>
+
+	                <div class="modal-footer">
+	                  <form action="{{ url_for('grupo.excluirContaPorGrupo', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" method="POST">
+	                  	{{ form.csrf_token }}
+	                    <input type="submit" value="Sim" class="btn btn-outline-info">
+	                  </form>
+	                </div>
+
+	              </div>
+	            </div>
+	          </div>
+	          <!-- Fim Modal Excluir Dados -->
+
+					{% endfor  %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

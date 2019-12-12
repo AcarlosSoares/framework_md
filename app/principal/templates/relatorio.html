@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+
+    <title>{{ title }}</title>
+
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 60%;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>
+      {{ title }}
+    </h1>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th class="text-center" style="width: 30px">Seq</th>
+          <th class="text-center" style="width: 200px">Sigla</th>
+          <th class="text-center" style="width: 600px">Nome</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for dado in dados %}
+          <tr>
+            <td>{{ dado.id }}</td>
+            <td>{{ dado.sigla }}</td>
+            <td>{{ dado.nome }}</td>
+          </tr>
+        {% endfor  %}
+      </tbody>
+
+    </table>
+
+  </body>
+
+</html>

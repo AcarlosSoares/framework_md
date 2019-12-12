@@ -1,0 +1,91 @@
+{% macro render_field(field) %}
+  <div class="form-group">
+    {{ field.label(class="form-control-label") }}
+    {% if field.errors %}
+      {{ field(class="form-control is-invalid") }}
+      <div class="invalid-feedback">
+        {% for error in field.errors %}
+          <span>{{ error }}</span>
+        {% endfor %}
+        </div>
+    {% else %}
+      {{ field(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_picture_field(field) %}
+  <div class="form-group">
+    {{ field.label(class="form-control-label") }}
+    {% if field.errors %}
+      {{ field(class="form-control is-invalid") }}
+      <div class="invalid-feedback">
+        {% for error in field.errors %}
+          <span>{{ error }}</span>
+        {% endfor %}
+        </div>
+    {% else %}
+      {{ field(class="form-control-file border") }}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_radio_field(field) %}
+  <div class="form-group">
+    {{ field.label(class_="form-control-label") }}
+    <div class="col-lg-4">
+      {% for subfield in field %}
+        <label>
+          {{ subfield }}
+          {{ subfield.label.text }}
+        </label>
+      {% endfor %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro render_select_field(field) %}
+  <div class="form-group">
+    <label for="{{ field.name }}">
+      {{ field.label(class="form-control-label") }}
+    </label>
+    <div>
+      {% if field.errors %}
+        {{ field(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in field.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ field(class="form-control form-control-lg") }}
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% macro render_select_field2(field) %}
+  <div class="form-group">
+    {{ field.label(class="form-control-label") }}
+    {% if field.errors %}
+      {{ field(class="form-control is-invalid") }}
+      <div class="invalid-feedback">
+        {% for error in field.errors %}
+          <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+    {% else %}
+      {{ field(class="form-control form-control-lg") }}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_boolean_field(field) %}
+  <div class="form-group">
+    <div class="form-check">
+      {{ field(class="form-check-input", type="checkbox") }}
+      {{ field.label(class="form-control-label") }}
+    </div>
+  </div>
+{% endmacro %}
+
