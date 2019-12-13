@@ -4,20 +4,6 @@
 <!-- fonte: https://material.io/resources/icons/?icon=add_box&style=outline -->
 <!-- fonte: http://google.github.io/material-design-icons/ -->
 
-	<div class="row">
-	<div class="col s12">
-  <div class="input-field">
-    <select>
-      <!-- <option value="" disabled selected>Choose your option</option> -->
-      <option value="1">Option 1</option>
-      <option value="2">Option 2</option>
-      <option value="3">Option 3</option>
-    </select>
-    <label>Materialize Select</label>
-  </div>
-  </div>
-  </div>
-
 	<div class="col s12">
 
 		<!-- Título  -->
@@ -25,44 +11,42 @@
 			{{ title }}
 		</h4>
 
-		<div class="row">
+		<!-- Painel de Ordenação e Pesquisa -->
+		<form action="{{ url_for('setor.acessar') }}" method="POST">
+			{{ form.csrf_token }}
 
-			<!-- Painel de Ordenação e Pesquisa -->
-			<form action="{{ url_for('setor.acessar') }}" method="POST">
-				{{ form.csrf_token }}
-
-
+			<div class="row">
 
 				<div class="col s4">
-					<div class="card-panel grey lighten-5">
-			      {{ form.ordenarpor.label }}
-			      <div class="row">
-			      	<div class="col s8">
-					      {{ form.ordenarpor }}
-					    </div>
-			      	<div class="col s4">
-					      {{ form.ordem }}
-					    </div>
-			      </div>
-		    	</div>
+					<div class="row">
+						<div class="input-field col s8">
+						  {{ form.ordenarpor }}
+						  {{ form.ordenarpor.label }}
+						</div>
+				    <div class=" input-field col s4">
+						  {{ form.ordem }}
+						  {{ form.ordem.label }}
+				    </div>
+					</div>
 		    </div>
 
-		    <div class="col s4">
-		    	<div class="card-panel grey lighten-5">
-			      {{ form.pesquisarpor.label }}
-					  {{ form.pesquisarpor }}
-		      </div>
+		    <div class="input-field col s4">
+					{{ form.pesquisarpor }}
+					{{ form.pesquisarpor.label }}
 		   	</div>
 
-		    <div class="col s4">
-		    	<div class="card-panel grey lighten-5">
-			      <a class="waves-effect waves-light btn white-text"><i class="material-icons left">send</i>{{ form.submit_enviar }}</a>
-	      		<a class="waves-effect waves-light btn"><i class="material-icons left">clear_all</i>{{ form.submit_limpar }}</a>
-		      </div>
+		    <div class=" input-field col s4 right-align">
+					<a class="waves-effect waves-light btn white-text"><i class="material-icons left">send</i>{{ form.submit_enviar }}</a>
+			    <a class="waves-effect waves-light btn"><i class="material-icons left">clear_all</i>{{ form.submit_limpar }}</a>
 		   	</div>
 
-				<!-- Painel Paginação e Botões Imprimir e Novo -->
-				<div>
+	  	</div>
+
+
+			<!-- Painel Paginação e Botões Imprimir e Novo -->
+			<div class="row">
+
+				<div class="col s6 left-align">
 					{% for page_num in dados.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 					  {% if page_num %}
 					    {% if dados.page == page_num %}
@@ -74,22 +58,23 @@
 					    ...
 					  {% endif %}
 					{% endfor %}
+				</div>
 
+				<div class="col s6 right-align">
 					<!-- Botão Imprimir -->
-					<a href="{{ url_for('setor.imprimir') }}" class="btn btn-light btn-sm float-sm-right my-2" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
+					<a href="{{ url_for('setor.imprimir') }}" class="btn btn-light btn-sm float-sm-right my-2" value="Imprimir" title="Imprimir">
 					  <i class="material-icons cor-marrom">print</i>
 					</a>
 
 					<!-- Botão Novo -->
-					<a href="{{ url_for('setor.incluir') }}" class="btn btn-light btn-sm float-sm-right my-2 mx-2" aria-label="Incluir" aria-pressed="true" alt="Novo" title="Novo">
+					<a href="{{ url_for('setor.incluir') }}" class="btn btn-light btn-sm float-sm-right my-2 mx-2" title="Novo">
 					  <i class="material-icons cor-verde">note_add</i>
 					</a>
-
 				</div>
 
-			</form>
+			</div>
 
-		</div>
+		</form>
 
 		<!-- Tabela de Listagem dos Dados -->
 		<div class="table-responsive">
@@ -101,7 +86,7 @@
 						<th class="text-center" style="width: 30px">Seq</th>
 						<th class="text-center" style="width: 200px">Sigla</th>
 						<th class="text-center" style="width: 700px">Nome</th>
-						<th class="text-center" style="width: 160px">Ação</th>
+						<th class="text-center center-align" style="width: 160px">Ação</th>
 					</tr>
 				</thead>
 
@@ -113,7 +98,7 @@
 							<td style="vertical-align:middle;">{{ dado.id }}</td>
 							<td style="vertical-align:middle;">{{ dado.sigla }}</td>
 							<td style="vertical-align:middle;">{{ dado.nome }}</td>
-							<td class="text-center">
+							<td class="text-center center-align">
 
 								<!-- Botão Alterar -->
 								<a href="{{ url_for('setor.alterar', id_data=dado.id) }}" class="btn btn-light btn-sm" role="button" aria-label="Alterar" aria-pressed="true" title="Alterar">

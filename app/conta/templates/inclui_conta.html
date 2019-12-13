@@ -2,88 +2,86 @@
 {% from "macros.html" import render_field, render_select_field2, render_picture_field %}
 {% block content %}
 
-  <div class="row align-items-center justify-content-center">
-    <div class="content-section col-md-10">
+  <form action="" method="POST">
+  {{ form.csrf_token }}
 
-      <div class="panel-body">
+    <div class="col s12 m6 offset-m3">
 
-        <div class="modal-body">
+      <div class="card z-depth-4">
 
-          <form action="" method="POST">
-          {{ form.csrf_token }}
+        <div class="card-content grey darken-3 white-text">
+          <span class="card-title">
+            {% if title %} {{ title }}
+            {% else %} Título
+            {% endif %}
+          </span>
+        </div>
 
-            <fieldset class="form-group">
+        <div class="card-content white dark-4">
 
-              <legend class="border-bottom mb-4">
+          <div class="row">
 
-                {% if title %} {{ title }}
-                {% else %} Título
-                {% endif %}
-
-                <button type="button" class="close" onclick="window.location.href = '{{ url_for('conta.acessar') }}';">
-                &times;
-                </button>
-
-              </legend>
-
-              <div class="content-section bg-light rounded-lg">
-                <div class="row mb-2">
-                  <div class="col-sm-4">
-                    {{ render_field(form.nomeusuario) }}
-                  </div>
-                  <div class="col-sm-8">
-                    {{ render_field(form.email) }}
-                  </div>
-                  <div class="col-sm-6">
-                    {{ render_field(form.senha) }}
-                  </div>
-                  <div class="col-sm-6">
-                    {{ render_field(form.confirmasenha) }}
-                  </div>
-                </div>
-              </div>
-
-              <br><h4>Dados do Usuário da Conta</h4><br>
-
-              <div class="content-section bg-light rounded-lg">
-                <div class="row mb-2">
-                    <div class="col-sm-7">
-                      {{ render_field(form.nomecompleto) }}
-                    </div>
-                    <div class="col-sm-5">
-                      {{ render_field(form.nomeguerra) }}
-                    </div>
-                    <div class="col-sm-6">
-                      {{ render_field(form.datanascimento) }}
-                    </div>
-                    <div class="col-sm-6">
-                      {{ render_field(form.matricula) }}
-                    </div>
-                    <div class="col-sm-4">
-                      {{ render_field(form.cpf) }}
-                    </div>
-                    <div class="col-sm-8">
-                      {{ render_picture_field(form.foto) }}
-                    </div>
-                    <div class="col-sm-12">
-                      {{ render_select_field2(form.setor_id) }}
-                    </div>
-                </div>
-              </div>
-
-            </fieldset>
-
-            <div class="modal-footer">
-              <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
-              </div>
+            <div class="col s12 right-align">
+              <a class="waves-effect waves-light btn white-text" href="{{ url_for('conta.acessar') }}" title="Voltar">
+                <i class="material-icons cor-marrom">close</i>
+              </a>
             </div>
 
-          </form>
+          </div>
 
+          <div class="row">
+            <div class="col s4">
+              {{ render_field(form.nomeusuario) }}
+            </div>
+            <div class="col s8">
+              {{ render_field(form.email) }}
+            </div>
+            <div class="col s6">
+              {{ render_field(form.senha) }}
+            </div>
+            <div class="col s6">
+              {{ render_field(form.confirmasenha) }}
+            </div>
+          </div>
+
+          <br><h4>Dados do Usuário da Conta</h4><br>
+
+          <div class="row">
+              <div class="col s7">
+                {{ render_field(form.nomecompleto) }}
+              </div>
+              <div class="col s5">
+                {{ render_field(form.nomeguerra) }}
+              </div>
+              <div class="col s6">
+                {{ render_field(form.datanascimento) }}
+              </div>
+              <div class="col s6">
+                {{ render_field(form.matricula) }}
+              </div>
+              <div class="col s4">
+                {{ render_field(form.cpf) }}
+              </div>
+              <div class="col s8">
+                {{ render_picture_field(form.foto) }}
+              </div>
+              <div class="col s12">
+                {{ render_select_field2(form.setor_id) }}
+              </div>
+          </div>
+
+          <div class="row">
+
+            <div class="col s12 left-align">
+              <a class="waves-effect waves-light btn white-text">
+                <i class="material-icons left">send</i>{{ form.submit }}
+              </a>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 
 {% endblock content %}

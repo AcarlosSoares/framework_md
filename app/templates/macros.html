@@ -1,39 +1,36 @@
+
 {% macro render_field(field) %}
-  <div class="form-group">
-    {{ field.label(class="form-control-label") }}
-    {% if field.errors %}
-      {{ field(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
-        {% for error in field.errors %}
-          <span>{{ error }}</span>
-        {% endfor %}
-        </div>
-    {% else %}
-      {{ field(class="form-control form-control-lg") }}
-    {% endif %}
+  <div class="input-field">
+      {{ field.label }}
+      {% if field.errors %}
+          {{ field(class="invalid") }}
+          <div>
+            {% for error in field.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+      {% else %}
+          {{ field }}
+      {% endif %}
   </div>
 {% endmacro %}
 
 {% macro render_picture_field(field) %}
-  <div class="form-group">
-    {{ field.label(class="form-control-label") }}
+  <div class="input-field">
+    {{ field }}
+    {{ field.label() }}
     {% if field.errors %}
-      {{ field(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
-        {% for error in field.errors %}
-          <span>{{ error }}</span>
-        {% endfor %}
-        </div>
-    {% else %}
-      {{ field(class="form-control-file border") }}
+      {% for error in field.errors %}
+        <span class="text-danger">{{ error }}</span></br>
+      {% endfor %}
     {% endif %}
-  </div>
+  </div><br><br>
 {% endmacro %}
 
 {% macro render_radio_field(field) %}
-  <div class="form-group">
-    {{ field.label(class_="form-control-label") }}
-    <div class="col-lg-4">
+  <div class="input-field">
+    {{ field.label }}
+    <div>
       {% for subfield in field %}
         <label>
           {{ subfield }}
@@ -45,37 +42,37 @@
 {% endmacro %}
 
 {% macro render_select_field(field) %}
-  <div class="form-group">
+  <div class="input-field">
     <label for="{{ field.name }}">
-      {{ field.label(class="form-control-label") }}
+      {{ field.label }}
     </label>
     <div>
       {% if field.errors %}
-        {{ field(class="form-control is-invalid") }}
-        <div class="invalid-feedback">
+        {{ field }}
+        <div>
           {% for error in field.errors %}
             <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% else %}
-        {{ field(class="form-control form-control-lg") }}
+        {{ field }}
       {% endif %}
     </div>
   </div>
 {% endmacro %}
 
 {% macro render_select_field2(field) %}
-  <div class="form-group">
-    {{ field.label(class="form-control-label") }}
+  <div class="input-field>
+    {{ field.label }}
     {% if field.errors %}
-      {{ field(class="form-control is-invalid") }}
-      <div class="invalid-feedback">
+      {{ field }}
+      <div>
         {% for error in field.errors %}
           <span>{{ error }}</span>
         {% endfor %}
       </div>
     {% else %}
-      {{ field(class="form-control form-control-lg") }}
+      {{ field }}
     {% endif %}
   </div>
 {% endmacro %}

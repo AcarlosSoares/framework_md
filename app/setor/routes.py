@@ -44,7 +44,7 @@ def acessar():
     return render_template('lista_setor.html', title='Lista de Setores', dados=dados, form=form)
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
-    return redirect(url_for('users.logout'))
+    return redirect(url_for('auth.logout'))
 
 
 @setor.route('/setor/incluir', methods=['GET', 'POST'])

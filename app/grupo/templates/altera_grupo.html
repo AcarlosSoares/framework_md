@@ -2,46 +2,50 @@
 {% from "macros.html" import render_field %}
 {% block content %}
 
-  <div class="row align-items-center justify-content-center">
-    <div class="content-section col-md-10">
+  <form action="" method="POST">
+  {{ form.csrf_token }}
 
-      <div class="panel-body">
-        <div class="modal-body">
+    <div class="col s12 m5 offset-m3">
 
-          <form action="" method="POST">
-          {{ form.csrf_token }}
+      <div class="card z-depth-4">
 
-            <fieldset class="form-group">
+        <div class="card-content grey darken-3 white-text">
+          <span class="card-title">
+            {% if title %} {{ title }}
+            {% else %} Título
+            {% endif %}
+          </span>
+        </div>
 
-              <legend class="border-bottom mb-4">
+        <div class="card-content white dark-4">
 
-                {% if title %} {{ title }}
-                {% else %} Título
-                {% endif %}
+          <div class="row">
 
-                <button type="button" class="close" onclick="window.location.href = '{{ url_for('grupo.acessarGrupo') }}';">
-                &times;
-                </button>
-              </legend>
-
-              <div class="content-section bg-light rounded-lg">
-                {{ render_field(form.nome) }}
-                {{ render_field(form.descricao) }}
-              </div>
-
-            </fieldset>
-
-            <div class="modal-footer">
-              <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
-              </div>
+            <div class="col s12 right-align">
+              <a class="waves-effect waves-light btn white-text" href="{{ url_for('grupo.acessarGrupo') }}" title="Voltar">
+                <i class="material-icons cor-marrom">close</i>
+              </a>
             </div>
 
-          </form>
+          </div>
 
+          <div>
+            {{ render_field(form.nome) }}
+            {{ render_field(form.descricao) }}
+          </div>
+
+          <div class="row">
+
+            <div class="col s12 left-align">
+              <a class="waves-effect waves-light btn white-text">
+                <i class="material-icons left">send</i>{{ form.submit }}
+              </a>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </form>
 
 {% endblock content %}

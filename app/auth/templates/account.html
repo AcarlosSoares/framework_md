@@ -14,55 +14,53 @@
 
         <div class="card-content white dark-4">
 
-          <div class="card-panel grey lighten-5 z-depth-1">
-            <div class="row valign-wrapper">
-              <div class="col s4">
-                <img src="{{ foto }}" alt="" class="circle responsive-img">
-              </div>
-              <div class="col s8">
-                <span class="black-text">
-                  <h5 class="account-heading">{{ current_user.usuario }}</h5>
-                  <p class="text-secondary">{{ current_user.email }}</p>
-                </span>
-              </div>
+          <div class="row valign-wrapper">
+            <div class="col s4">
+              <img src="{{ foto }}" alt="" class="circle responsive-img">
             </div>
-          </div><br>
+            <div class="col s8">
+              <span class="black-text">
+                <h5 class="account-heading">{{ current_user.usuario }}</h5>
+                <p class="text-secondary">{{ current_user.email }}</p>
+              </span>
+            </div>
+          </div>
 
           <div class="input-field">
-              {{ form.usuario.label(class="form-control-label") }}
+              {{ form.usuario.label }}
               {% if form.usuario.errors %}
-                  {{ form.usuario(class="form-control form-control-lg is-invalid") }}
+                  {{ form.usuario(class="invalid") }}
                   <div class="invalid-feedback">
-                      {% for error in form.usuario.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
+                    {% for error in form.usuario.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
                   </div>
               {% else %}
-                  {{ form.usuario(class="form-control form-control-lg") }}
+                  {{ form.usuario }}
               {% endif %}
           </div>
 
           <div class="input-field">
-              {{ form.email.label(class="form-control-label") }}
+              {{ form.email.label }}
               {% if form.email.errors %}
-                  {{ form.email(class="form-control form-control-lg is-invalid") }}
+                  {{ form.email(class="invalid") }}
                   <div class="invalid-feedback">
-                      {% for error in form.email.errors %}
-                          <span>{{ error }}</span>
-                      {% endfor %}
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
                   </div>
               {% else %}
-                  {{ form.email(class="form-control form-control-lg") }}
+                  {{ form.email }}
               {% endif %}
           </div>
 
           <div class="form-group">
               {{ form.picture.label() }}
-              {{ form.picture(class="form-control-file") }}
+              {{ form.picture }}
               {% if form.picture.errors %}
-                  {% for error in form.picture.errors %}
-                      <span class="text-danger">{{ error }}</span></br>
-                  {% endfor %}
+                {% for error in form.picture.errors %}
+                    <span class="text-danger">{{ error }}</span></br>
+                {% endfor %}
               {% endif %}
           </div><br><br>
 
