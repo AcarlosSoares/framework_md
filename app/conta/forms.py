@@ -29,7 +29,8 @@ class IncluiContaUsuarioForm(FlaskForm):
   nomecompleto = StringField('Nome', validators=[DataRequired(message='Nome deve ser prenchido!'),
    Length(min=3, max=80, message='Nome deve ter entre 3 e 80 caracteres!')])
   nomeguerra = StringField('Nome de Guerra', validators=[DataRequired(message='Nome deve ser prenchido!'), Length(min=3, max=20, message='Nome deve ter entre 3 e 20 caracteres!')])
-  datanascimento = DateField('Data de Nascimento', validators=[DataRequired(message='Data deve ser prenchida!')], format=('%Y-%m-%d'))
+  # datanascimento = DateField('Data de Nascimento', validators=[DataRequired(message='Data deve ser prenchida!')], format=('%Y-%m-%d'))
+  datanascimento = DateField('Data de Nascimento', validators=[DataRequired(message='Data deve ser prenchida!')])
   matricula = StringField('Matrícula', validators=[DataRequired(message='Nome deve ser prenchido!'),
    Length(min=5, max=11, message='Nome deve ter entre 5 e 11 caracteres!')])
   cpf = StringField('CPF', validators=[DataRequired(message='CPF deve ser prenchido!'),

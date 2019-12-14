@@ -15,10 +15,26 @@
   </div>
 {% endmacro %}
 
-{% macro render_picture_field(field) %}
+{% macro render_field_date(field) %}
   <div class="input-field">
-    {{ field }}
+      {{ field }}
+      {% if field.errors %}
+          {{ field(class="invalid") }}
+          <div>
+            {% for error in field.errors %}
+                <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+      {% else %}
+          {{ field.label }}
+      {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro render_picture_field(field) %}
+  <div class="form-group">
     {{ field.label() }}
+    {{ field }}
     {% if field.errors %}
       {% for error in field.errors %}
         <span class="text-danger">{{ error }}</span></br>
@@ -62,7 +78,7 @@
 {% endmacro %}
 
 {% macro render_select_field2(field) %}
-  <div class="input-field>
+  <div class="input-field">
     {{ field.label }}
     {% if field.errors %}
       {{ field }}
