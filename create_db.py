@@ -47,7 +47,7 @@ class Usuario(db.Model):
   matricula = db.Column("ds_matricula_usu", db.String(50))
   cpf = db.Column("ds_cpf_usu", db.String(50))
   foto = db.Column("ds_foto_usu", db.String(20), default='default.jpg')
-  setor_id = db.Column(db.Integer, db.ForeignKey('setor_set.id_setor'), unique=True)
+  setor_id = db.Column(db.Integer, db.ForeignKey('setor_set.id_setor'), unique=False)
   conta_id = db.Column(db.Integer, db.ForeignKey('conta_con.id_conta'), unique=True)
 
 

@@ -1,34 +1,42 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<!--------------------------- LISTA DA TABELAS DE ASSOCIAÇÃO -------------------------->
+<div class="col s12">
 
-<!-- Título  -->
-<h2>
-	{{ title1 }}
-</h2>
+	<!--------------------------- LISTA DA TABELAS DE ASSOCIAÇÃO -------------------------->
 
-<!-- Sub-Título  -->
-<h3>
-	Grupo: {{ nome_super }}
+	<!-- Título  -->
+	<h4>
+		{{ title1 }}
+	</h4>
 
-	<!-- Botão Voltar -->
-  <a href="{{ url_for('grupo.acessarGrupo') }}" class="btn btn-outline-info float-md-right my-2" role="button" aria-pressed="true">Voltar</a>
+	<div class="row">
 
-</h3><br>
+		<!-- Sub-Título  -->
+		<div class="col s6 left-align">
+			<h5>
+				Grupo: {{ nome_super }}
+			</h5><br>
+		</div>
 
-<div class="container">
+		<div class="col s6 right-align">
+			<!-- Botão Voltar -->
+		  <a href="{{ url_for('grupo.acessarGrupo') }}" class="btn btn-outline-info float-md-right my-2" role="button" aria-pressed="true">Voltar</a>
+		</div>
 
-	<div class="content-section col-md-12">
+	</div>
+
+	<div class="row">
 
 <!----------------------- LISTA DA TABELA 2 -------------------------->
-		<div class="wrap">
+		<div class="col s6 left-align">
 
 			<!-- Painel de Ordenação e Pesquisa -->
 			<form action="{{ url_for('grupo.acessarGrupo', id_super=id_super, nome_super=nome_super) }}" method="POST">
 
 				<!-- Painel Paginação e Botões Imprimir -->
-				<div>
+				<div class="row">
+					<div class="col s6 left-align">
 					{% for page_num2 in dados2.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 					  {% if page_num2 %}
 					    {% if dados2.page == page_num2 %}
@@ -41,6 +49,7 @@
 					  {% endif %}
 					{% endfor %}
 
+					</div>
 				</div>
 
 			</form>
@@ -53,7 +62,7 @@
 					<tr>
 						<th class="text-center" style="width: 30px">Seq</th>
 						<th class="text-center" style="width: 600px">Contas</th>
-						<th class="text-center" style="width: 60px">Ação</th>
+						<th class="text-center center-align" style="width: 60px">Ação</th>
 					</tr>
 				</thead>
 
@@ -64,7 +73,7 @@
 						<tr>
 							<td style="vertical-align:middle">{{ dado.id }}</td>
 							<td style="vertical-align:middle">{{ dado.usuario }}</td>
-							<td class="text-center">
+							<td class="text-center center-align">
 
 								<!-- Botão Adicionar -->
 								<a href="{{ url_for('grupo.adicionarConta', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm" value="Adicionar" aria-label="Adicionar" aria-pressed="true" alt="Adicionar" title="Adicionar">
@@ -80,14 +89,15 @@
 		</div>
 
 	<!----------------------- LISTA DA TABELA 1 -------------------------->
-		<div class="wrap">
+		<div class="col s6 right-align">
 
 			<!-- Painel de Ordenação e Pesquisa -->
 			<form action="{{ url_for('grupo.acessarConta', id_super=id_super, nome_super=nome_super) }}" method="POST">
 				{{ form.csrf_token }}
 
 				<!-- Painel Paginação e Botões Imprimir -->
-				<div>
+				<div class="row">
+					<div class="col s6 left-align">
 					{% for page_num in dados1.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 					  {% if page_num %}
 					    {% if dados1.page == page_num %}
@@ -99,12 +109,14 @@
 					    ...
 					  {% endif %}
 					{% endfor %}
+					</div>
 
+					<div class="col s6 right-align">
 		      <!-- Botão Imprimir -->
 					<a href="{{ url_for('grupo.imprimir2', id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm float-sm-right" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
 					  <i class="material-icons cor-marrom">print</i>
 					</a>
-
+					</div>
 				</div>
 
 			</form>
@@ -117,7 +129,7 @@
 					<tr>
 						<th class="text-center" style="width: 30px">Seq</th>
 						<th class="text-center" style="width: 600px">Contas Por Grupo</th>
-						<th class="text-center" style="width: 60px">Ação</th>
+						<th class="text-center center-align" style="width: 60px">Ação</th>
 					</tr>
 				</thead>
 
@@ -128,7 +140,7 @@
 						<tr>
 							<td style="vertical-align:middle">{{ dado.id }}</td>
 							<td style="vertical-align:middle">{{ dado.usuario }}</td>
-							<td class="text-center">
+							<td class="text-center center-align">
 
 								<!-- Botão Excluir -->
 								<a href="#" class="btn btn-ligth btn-sm" role="button" aria-label="Excluir" aria-pressed="true" data-toggle="modal" title="Excluir" data-target="#excluirModal1{{ dado.id }}">

@@ -144,7 +144,10 @@
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
-  <script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
+
+
+  <script type = "text/javascript">
 
     // Sidenav
     const sideNav = document.querySelector('.sidenav');
@@ -168,20 +171,34 @@
 
     // Modal
 
+    $(document).ready(function() {
+      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+      /*$('.view').click(function (){
+        $('#modal1').modal('open');
+        alert('edskjcxnm');
+      });*/
+      /*$('.view').leanModal();*/
+      $('#excluirModal').modal('open');
+    });
+
+    $(document).ready(function () {
+      $('.modal').modal();
+    });
+
     const modal = document.querySelectorAll('.modal');
     const instance = M.Modal.init(modal);
 
 
-    // $(document).ready(function(){
-      // var instance = M.Modal.getInstance('.modal');
-      // instance.open();
-      // $('#modal1').openModal();
-    // })
+    $(document).ready(function(){
+      var instance = M.Modal.getInstance('.modal');
+      instance.open();
+      // $('.modal').openModal();
+    })
 
-    // $(document).ready(function(){
-    //   // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    //   $('.modal-trigger').leanModal();
-    // });
+    $(document).ready(function(){
+      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+      $('.modal-trigger').leanModal();
+    });
 
 
   </script>
