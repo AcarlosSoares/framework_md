@@ -20,13 +20,13 @@ def index():
     abort(404)
 
 
-@conta.route('/conta/acessar', methods=['GET', 'POST'])
+@conta.route('/conta/acessarConta', methods=['GET', 'POST'])
 @login_required
-def acessar():
+def acessarConta():
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('conta.acessar'))
+    return redirect(url_for('conta.acessarConta'))
 
   form = ListaContaUsuarioForm()
 
@@ -39,7 +39,7 @@ def acessar():
     form.ordenarpor.data = 'conta_con.id_conta'
     form.ordenarpor.data = 'ASC'
     form.ordenarpor.data = None
-    return redirect(url_for('conta.acessar'))
+    return redirect(url_for('conta.acessarConta'))
 
   try:
     page = request.form.get('page', 1, type=int)
@@ -66,7 +66,7 @@ def incluir():
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('conta.acessar'))
+    return redirect(url_for('conta.acessarConta'))
 
   form = IncluiContaUsuarioForm()
 
@@ -105,19 +105,20 @@ def incluir():
       db.session.commit()
 
       flash('Registro foi incluído com sucesso!', 'success')
-      return redirect(url_for('conta.acessar'))
+      return redirect(url_for('conta.acessarConta'))
     except Exception as e:
       flash('Falha no aplicativo! ' + str(e), 'danger')
-      return redirect(url_for('conta.acessar'))
+      return redirect(url_for('conta.acessarConta'))
 
 
-@conta.route("/conta/excluir/<int:id_data>", methods=['POST'])
+@conta.route("/conta/excluir/<int:id_data>", methods=['GET', 'POST'])
+@login_required
 @login_required
 def excluir(id_data):
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('conta.acessar'))
+    return redirect(url_for('conta.acessarConta'))
 
   try:
     dado = Conta.query.get(id_data)
@@ -125,13 +126,13 @@ def excluir(id_data):
       db.session.delete(dado)
       db.session.commit()
       flash('Registro foi excluido com sucesso!', 'success')
-      return redirect(url_for('conta.acessar'))
+      return redirect(url_for('conta.acessarConta'))
     else:
       flash('Falha na exclusão!', 'danger')
-      return redirect(url_for('conta.acessar'))
+      return redirect(url_for('conta.acessarConta'))
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
-    return redirect(url_for('conta.acessar'))
+    return redirect(url_for('conta.acessarConta'))
 
 
 @conta.route('/conta/alterar/<int:id_data>', methods=['GET', 'POST'])
@@ -140,7 +141,7 @@ def alterar(id_data):
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('conta.acessar'))
+    return redirect(url_for('conta.acessarConta'))
 
   form = AlteraContaUsuarioForm()
 
@@ -170,7 +171,7 @@ def alterar(id_data):
 
     except Exception as e:
       flash('Falha no aplicativo! ' + str(e), 'danger')
-      return redirect(url_for('conta.acessar'))
+      return redirect(url_for('conta.acessarConta'))
 
   if not form.validate_on_submit():
     return render_template('altera_conta.html', title='Alterar Conta', form=form)
@@ -197,10 +198,10 @@ def alterar(id_data):
       dado.usuarios.setor_id = form.setor_id.data
       db.session.commit()
       flash('Registro foi alterado com sucesso!', 'success')
-      return redirect(url_for('conta.acessar'))
+      return redirect(url_for('conta.acessarConta'))
     except Exception as e:
       flash('Falha no aplicativo! ' + str(e), 'danger')
-      return redirect(url_for('conta.acessar'))
+      return redirect(url_for('conta.acessarConta'))
 
 
 @conta.route('/conta/imprimir', methods=['GET'])
@@ -226,7 +227,7 @@ def imprimir():
       dados = Conta.query.all()
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
-    return redirect(url_for('conta.acessar'))
+    return redirect(url_for('conta.acessarConta'))
 
   # # # PARÂMETROS DO RELATÓRIO
   titulo = 'LISTA DE CONTAS DE USUÁRIO'
@@ -304,9 +305,9 @@ def adicionarGrupo(id_data, id_super, nome_super):
     return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
 
 
-@conta.route("/conta/excluirGrupoConta/<int:id_data>/<int:id_super>/<string:nome_super>", methods=['POST'])
+@conta.route("/conta/excluirGrupoPorConta/<int:id_data>/<int:id_super>/<string:nome_super>", methods=['GET', 'POST'])
 @login_required
-def excluirGrupoConta(id_data, id_super, nome_super):
+def excluirGrupoPorConta(id_data, id_super, nome_super):
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')

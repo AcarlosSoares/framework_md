@@ -35,8 +35,18 @@
       <!-- Dropdown Structure -->
       <ul id="dropdown1" class="dropdown-content">
         <li><a href="{{ url_for('grupo.acessarGrupo') }}" class="dropdown-item">Grupos</a></li>
-        <li><a href="{{ url_for('conta.acessar') }}" class="dropdown-item">Contas</a></li>
+        <li><a href="{{ url_for('conta.acessarConta') }}" class="dropdown-item">Contas</a></li>
         <li><a href="{{ url_for('setor.acessar') }}" class="dropdown-item">Setor</a></li>
+        <li class="divider"></li>
+        <li><a href="{{ url_for('auth.register') }}" class="dropdown-item">Registro</a></li>
+      </ul>
+
+      <ul id="dropdown2" class="dropdown-content">
+        <li class="divider"></li>
+        <li><a href="{{ url_for('auth.register') }}" class="dropdown-item">Registro</a></li>
+      </ul>
+
+      <ul id="dropdown3" class="dropdown-content">
         <li class="divider"></li>
         <li><a href="{{ url_for('auth.register') }}" class="dropdown-item">Registro</a></li>
       </ul>
@@ -102,24 +112,6 @@
       </nav>
     </div>
 
-    <ul class="sidenav" id="mobile-nav">
-      <li>
-        <a href="#home">Home</a>
-      </li>
-      <li>
-        <a href="#search">Search</a>
-      </li>
-      <li>
-        <a href="#popular">Popular Places</a>
-      </li>
-      <li>
-        <a href="#gallery">Gallery</a>
-      </li>
-      <li>
-        <a href="#contact">Contact</a>
-      </li>
-    </ul>
-
   </header>
 
   <main role="main" class="container">
@@ -129,9 +121,22 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
-              <div>
-                {{ message }}
-              </div>
+              {% if category == 'danger' %}
+                <div class="red-text text-darken-2">
+                  <i class="material-icons left red-text" style="vertical-align:middle; font-size:30px;">sentiment_very_dissatisfied</i>
+                  <h5>{{ message }}</h5>
+                </div>
+              {% elif category == 'info' %}
+                <div class="orange-text text-darken-2">
+                  <i class="material-icons left orange-text" style="vertical-align:middle; font-size:30px;">sentiment_neutral</i>
+                  <h5>{{ message }}</h5>
+                </div>
+              {% else %}
+                  <i class="material-icons left teal-text" style="vertical-align:middle; font-size:30px;">sentiment_very_satisfied</i>
+                  <div class="teal-text text-darken-2">
+                  <h5>{{ message }}</h5>
+                </div>
+              {% endif %}
             {% endfor %}
           {% endif %}
         {% endwith %}
@@ -143,9 +148,6 @@
 
   <!--JavaScript at end of body for optimized loading-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
-
 
   <script type = "text/javascript">
 
@@ -159,6 +161,7 @@
 
     // DropDown
     var dropdowns = document.querySelectorAll('.dropdown-trigger')
+    // console.log(dropdowns);
     for (var i = 0; i < dropdowns.length; i++){
         M.Dropdown.init(dropdowns[i]);
     }
@@ -170,36 +173,11 @@
     });
 
     // Modal
-
-    $(document).ready(function() {
-      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-      /*$('.view').click(function (){
-        $('#modal1').modal('open');
-        alert('edskjcxnm');
-      });*/
-      /*$('.view').leanModal();*/
-      $('#excluirModal').modal('open');
-    });
-
-    $(document).ready(function () {
-      $('.modal').modal();
-    });
-
-    const modal = document.querySelectorAll('.modal');
-    const instance = M.Modal.init(modal);
-
-
-    $(document).ready(function(){
-      var instance = M.Modal.getInstance('.modal');
-      instance.open();
-      // $('.modal').openModal();
-    })
-
-    $(document).ready(function(){
-      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-      $('.modal-trigger').leanModal();
-    });
-
+    var modal = document.querySelectorAll('.modal');
+    // console.log(modal);
+    for (var i = 0; i < modal.length; i++){
+        M.Modal.init(modal[i]);
+    }
 
   </script>
 </body>

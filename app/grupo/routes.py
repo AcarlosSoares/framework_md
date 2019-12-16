@@ -105,7 +105,7 @@ def incluirGrupo():
       return redirect(url_for('grupo.acessarGrupo'))
 
 
-@grupo.route("/grupo/excluirGrupo/<int:id_data>", methods=['POST'])
+@grupo.route("/grupo/excluirGrupo/<int:id_data>", methods=['GET', 'POST'])
 @login_required
 def excluirGrupo(id_data):
 
@@ -276,7 +276,7 @@ def adicionarConta(id_data, id_super, nome_super):
 
 
 @grupo.route("/grupo/excluirContaPorGrupo/<int:id_data>/<int:id_super>/<string:nome_super>", \
- methods=['POST'])
+ methods=['GET', 'POST'])
 @login_required
 def excluirContaPorGrupo(id_data, id_super, nome_super):
 
@@ -299,7 +299,6 @@ def excluirContaPorGrupo(id_data, id_super, nome_super):
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
     return redirect(url_for('grupo.acessarConta', id_super=id_super, nome_super=nome_super))
-
 
 
 @grupo.route('/grupo/imprimir2/<int:id_super>/<string:nome_super>', methods=['GET'])

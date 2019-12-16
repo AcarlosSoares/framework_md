@@ -79,7 +79,7 @@ def incluir():
       return redirect(url_for('setor.acessar'))
 
 
-@setor.route("/setor/excluir/<int:id_data>", methods=['POST'])
+@setor.route("/setor/excluir/<int:id_data>", methods=['GET', 'POST'])
 @login_required
 def excluir(id_data):
 

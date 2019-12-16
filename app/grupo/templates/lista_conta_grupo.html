@@ -21,34 +21,36 @@
 
 		<div class="col s6 right-align">
 			<!-- Botão Voltar -->
-		  <a href="{{ url_for('grupo.acessarGrupo') }}" class="btn btn-outline-info float-md-right my-2" role="button" aria-pressed="true">Voltar</a>
+		  <a href="{{ url_for('grupo.acessarGrupo') }}" class="waves-effect waves-light btn black-text">
+		  	<i class="material-icons left white-text">arrow_back</i>Voltar
+		  </a>
+
 		</div>
 
 	</div>
 
+	<!----------------------- LISTA DA TABELA 2 -------------------------->
 	<div class="row">
-
-<!----------------------- LISTA DA TABELA 2 -------------------------->
 		<div class="col s6 left-align">
 
 			<!-- Painel de Ordenação e Pesquisa -->
-			<form action="{{ url_for('grupo.acessarGrupo', id_super=id_super, nome_super=nome_super) }}" method="POST">
+			<form action="{{ url_for('grupo.acessarConta', id_super=id_super, nome_super=nome_super) }}" method="POST">
+				{{ form.csrf_token }}
 
-				<!-- Painel Paginação e Botões Imprimir -->
+				<!-- Painel Paginação -->
 				<div class="row">
 					<div class="col s6 left-align">
-					{% for page_num2 in dados2.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-					  {% if page_num2 %}
-					    {% if dados2.page == page_num2 %}
-					      <input class="btn btn-info my-2" name="page2" type="submit" value={{ page_num2 }} />
-					    {% else %}
-					      <input class="btn btn-outline-info my-2" name="page2" type="submit" value={{ page_num2 }} />
-					    {% endif %}
-					  {% else %}
-					    ...
-					  {% endif %}
-					{% endfor %}
-
+						{% for page_num2 in dados2.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+						  {% if page_num2 %}
+						    {% if dados2.page == page_num2 %}
+						      <input class="waves-effect waves-light btn" name="page2" type="submit" value={{ page_num2 }} />
+						    {% else %}
+						      <input class="waves-effect waves-light btn teal lighten-4" name="page2" type="submit" value={{ page_num2 }} />
+						    {% endif %}
+						  {% else %}
+						    ...
+						  {% endif %}
+						{% endfor %}
 					</div>
 				</div>
 
@@ -88,7 +90,7 @@
 			</table>
 		</div>
 
-	<!----------------------- LISTA DA TABELA 1 -------------------------->
+		<!----------------------- LISTA DA TABELA 1 -------------------------->
 		<div class="col s6 right-align">
 
 			<!-- Painel de Ordenação e Pesquisa -->
@@ -98,24 +100,24 @@
 				<!-- Painel Paginação e Botões Imprimir -->
 				<div class="row">
 					<div class="col s6 left-align">
-					{% for page_num in dados1.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-					  {% if page_num %}
-					    {% if dados1.page == page_num %}
-					      <input class="btn btn-info my-2" name="page1" type="submit" value={{ page_num }} />
-					    {% else %}
-					      <input class="btn btn-outline-info my-2" name="page1" type="submit" value={{ page_num }} />
-					    {% endif %}
-					  {% else %}
-					    ...
-					  {% endif %}
-					{% endfor %}
+						{% for page_num in dados1.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+						  {% if page_num %}
+						    {% if dados1.page == page_num %}
+						      <input class="waves-effect waves-light btn" name="page1" type="submit" value={{ page_num }} />
+						    {% else %}
+						      <input class="waves-effect waves-light btn teal lighten-4" name="page1" type="submit" value={{ page_num }} />
+						    {% endif %}
+						  {% else %}
+						    ...
+						  {% endif %}
+						{% endfor %}
 					</div>
 
 					<div class="col s6 right-align">
 		      <!-- Botão Imprimir -->
-					<a href="{{ url_for('grupo.imprimir2', id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm float-sm-right" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
-					  <i class="material-icons cor-marrom">print</i>
-					</a>
+						<a href="{{ url_for('grupo.imprimir2', id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm float-sm-right" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
+						  <i class="material-icons cor-marrom">print</i>
+						</a>
 					</div>
 				</div>
 
@@ -143,39 +145,26 @@
 							<td class="text-center center-align">
 
 								<!-- Botão Excluir -->
-								<a href="#" class="btn btn-ligth btn-sm" role="button" aria-label="Excluir" aria-pressed="true" data-toggle="modal" title="Excluir" data-target="#excluirModal1{{ dado.id }}">
-								  <i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
+								<a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#excluirModal{{ dado.id }}">
+									<i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
 								</a>
 
 							</td>
 						</tr>
 
 	          <!-- Modal Excluir Dados -->
-	          <div class="modal fade" id="excluirModal1{{ dado.id }}">
-	            <div class="modal-dialog modal-dialog-centered" role="document">
-	              <div class="modal-content">
 
-	                <div class="modal-header">
-	                  <h5 class="modal-title" id="exampleModalLongTitle">Excluir Registro</h5>
-	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                  </button>
-	                </div>
+					  <div id="excluirModal{{ dado.id }}" class="modal">
+						<div class="modal-content left-align">
+						  <h4>Excluir Registro</h4>
+						  <p>Confirma a exclusão: {{ dado.usuario }}? </p>
+						</div>
+						<div class="modal-footer">
+						  <a href="{{ url_for('grupo.excluirContaPorGrupo', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="modal-close waves-effect waves-green btn-flat">Sim</a>
+						  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Não</a>
+						</div>
+					  </div>
 
-	                <div class="modal-body">
-	                  <p>Confirma a exclusão: {{ dado.usuario }}? </p>
-	                </div>
-
-	                <div class="modal-footer">
-	                  <form action="{{ url_for('grupo.excluirContaPorGrupo', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" method="POST">
-	                  	{{ form.csrf_token }}
-	                    <input type="submit" value="Sim" class="btn btn-outline-info">
-	                  </form>
-	                </div>
-
-	              </div>
-	            </div>
-	          </div>
 	          <!-- Fim Modal Excluir Dados -->
 
 					{% endfor  %}
