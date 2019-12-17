@@ -61,8 +61,47 @@ class Setor(db.Model):
   cod_setor = db.Column("cd_setor_set", db.String(4))
   sigla = db.Column("ds_sigla_set", db.String(10))
   nome = db.Column("ds_nome_set", db.String(45))
+  usuarios_do_setor = db.relationship('Usuario', backref='setor', lazy=True)
 
 
 db.drop_all()
 db.create_all()
 print("DB Criado!!!")
+
+g1 = Grupo(nome="Administradores", descricao="Grupo de Administradores")
+g2 = Grupo(nome="Diretores", descricao="Grupo de Diretores")
+g3 = Grupo(nome="Gerentes", descricao="Grupo de Gerentes")
+g4 = Grupo(nome="Operadores", descricao="Grupo de Operadores")
+db.session.add(g1)
+db.session.add(g2)
+db.session.add(g3)
+db.session.add(g4)
+db.session.commit()
+
+s1 = Setor(cod_empresa="74", cod_diretoria="00", cod_setor="00", sigla="ETICE", nome="Empresa de TI do Ceara")
+s2 = Setor(cod_empresa="74", cod_diretoria="01", cod_setor="00", sigla="DIOPE", nome="Diretoria de Operaçoes")
+s3 = Setor(cod_empresa="74", cod_diretoria="01", cod_setor="01", sigla="GESAC", nome="Gerencia de Atendimento")
+s4 = Setor(cod_empresa="74", cod_diretoria="02", cod_setor="00", sigla="DIREN", nome="Diretoria de Relacionamentos")
+db.session.add(s1)
+db.session.add(s2)
+db.session.add(s3)
+db.session.add(s4)
+db.session.commit()
+
+# Cadastra Conta
+conta1 = Conta(usuario="ACarlos", email="acls.soares@gmail.com", senha="$12$rWMjGE6LhXBDtuqSRzw3LubNgj/SZ/A0zLLaGgtYdDrFO8lbvJWcy")
+conta2 = Conta(usuario="Francisca", email="kita@hotmail.com", senha="$12$rWMjGE6LhXBDtuqSRzw3LubNgj/SZ/A0zLLaGgtYdDrFO8lbvJWcy")
+conta1.grupos.append(g1)
+conta2.grupos.append(g1)
+db.session.add(conta1)
+db.session.add(conta2)
+
+# Cadastra Usuario
+usuario1 = Usuario(nomecompleto="Antonio Carlos", nomeguerra="ACarlos", datanascimento="1961-10-26 00:00:00", matricula="19917", cpf="20366060344", foto="default.jpg", conta=conta1, setor=s3)
+usuario2 = Usuario(nomecompleto="Francisca Maria", nomeguerra="Francisca", datanascimento="1961-09-23 00:00:00", matricula="18715", cpf="11111111111", foto="default.jpg", conta=conta2, setor=s3)
+db.session.add(usuario1)
+db.session.add(usuario2)
+
+db.session.commit()
+
+print("DB Populado!!!")

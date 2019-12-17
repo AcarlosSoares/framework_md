@@ -12,7 +12,7 @@
 		</h4>
 
 		<!-- Painel de Ordenação e Pesquisa -->
-		<form action="{{ url_for('setor.acessar') }}" method="POST">
+		<form action="{{ url_for('setor.acessarSetor') }}" method="POST">
 			{{ form.csrf_token }}
 
 			<div class="row">
@@ -87,8 +87,8 @@
 					<tr>
 						<th class="text-center" style="width: 30px">Seq</th>
 						<th class="text-center" style="width: 200px">Sigla</th>
-						<th class="text-center" style="width: 700px">Nome</th>
-						<th class="text-center center-align" style="width: 160px">Ação</th>
+						<th class="text-center" style="width: 600px">Nome</th>
+						<th class="text-center center-align" style="width: 180px">Ação</th>
 					</tr>
 				</thead>
 
@@ -110,6 +110,11 @@
 								<!-- Botão Excluir -->
 								<a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#excluirModal{{ dado.id }}">
 									<i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
+								</a>
+
+								<!-- Botão Grupos -->
+								<a href="{{ url_for('setor.acessarUsuario', id_super=dado.id, nome_super=dado.sigla) }}" class="btn btn-ligth btn-sm" role="button" aria-label="Alterar" aria-pressed="true" title="Usuários" >
+								  <i class="material-icons cor-roxa" style="vertical-align:middle;">group_add</i>
 								</a>
 
 							</td>

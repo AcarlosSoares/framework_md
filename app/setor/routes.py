@@ -3,19 +3,19 @@ from flask_login import current_user, login_required
 from sqlalchemy import desc, asc, text
 from app import db
 from app.models.models import Setor
-from app.setor.forms import ListaForm, IncluiForm, AlteraForm
+from app.setor.forms import ListaForm, IncluiForm, AlteraForm, ListaUsuarioSetorForm
 import os
 
 setor = Blueprint('setor', __name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
 
-@setor.route('/setor/acessar', methods=['GET', 'POST'])
+@setor.route('/setor/acessarSetor', methods=['GET', 'POST'])
 @login_required
-def acessar():
+def acessarSetor():
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('setor.acessar'))
+    return redirect(url_for('setor.acessarSetor'))
 
   form = ListaForm()
 
@@ -28,7 +28,7 @@ def acessar():
     form.ordenarpor.data = 'setor_set.id_setor'
     form.ordenarpor.data = 'ASC'
     form.ordenarpor.data = None
-    return redirect(url_for('setor.acessar'))
+    return redirect(url_for('setor.acessarSetor'))
 
   try:
     page = request.form.get('page', 1, type=int)
@@ -53,7 +53,7 @@ def incluir():
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('setor.acessar'))
+    return redirect(url_for('setor.acessarSetor'))
 
   form = IncluiForm()
 
@@ -73,10 +73,10 @@ def incluir():
       db.session.add(dado)
       db.session.commit()
       flash('Registro foi incluído com sucesso!', 'success')
-      return redirect(url_for('setor.acessar'))
+      return redirect(url_for('setor.acessarSetor'))
     except Exception as e:
       flash('Falha no aplicativo! ' + str(e), 'danger')
-      return redirect(url_for('setor.acessar'))
+      return redirect(url_for('setor.acessarSetor'))
 
 
 @setor.route("/setor/excluir/<int:id_data>", methods=['GET', 'POST'])
@@ -85,7 +85,7 @@ def excluir(id_data):
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('setor.acessar'))
+    return redirect(url_for('setor.acessarSetor'))
 
   try:
     dado = Setor.query.get(id_data)
@@ -93,13 +93,13 @@ def excluir(id_data):
       db.session.delete(dado)
       db.session.commit()
       flash('Registro foi excluido com sucesso!', 'success')
-      return redirect(url_for('setor.acessar'))
+      return redirect(url_for('setor.acessarSetor'))
     else:
       flash('Falha na exclusão!', 'danger')
-      return redirect(url_for('setor.acessar'))
+      return redirect(url_for('setor.acessarSetor'))
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
-    return redirect(url_for('setor.acessar'))
+    return redirect(url_for('setor.acessarSetor'))
 
 
 @setor.route('/setor/alterar/<int:id_data>', methods=['GET', 'POST'])
@@ -108,7 +108,7 @@ def alterar(id_data):
 
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
-    return redirect(url_for('setor.acessar'))
+    return redirect(url_for('setor.acessarSetor'))
 
   form = AlteraForm()
 
@@ -124,7 +124,7 @@ def alterar(id_data):
       return render_template('altera_setor.html', title='Alterar Setor', form=form)
     except Exception as e:
       flash('Falha no aplicativo! ' + str(e), 'danger')
-      return redirect(url_for('setor.acessar'))
+      return redirect(url_for('setor.acessarSetor'))
 
   if not form.validate_on_submit():
     return render_template('altera_setor.html', title='Alterar Setor', form=form)
@@ -139,10 +139,10 @@ def alterar(id_data):
       dado.nome = form.nome.data
       db.session.commit()
       flash('Registro foi alterado com sucesso!', 'success')
-      return redirect(url_for('setor.acessar'))
+      return redirect(url_for('setor.acessarSetor'))
     except Exception as e:
       flash('Falha no aplicativo! ' + str(e), 'danger')
-      return redirect(url_for('setor.acessar'))
+      return redirect(url_for('setor.acessarSetor'))
 
 
 @setor.route('/setor/imprimir', methods=['GET'])
@@ -168,7 +168,7 @@ def imprimir():
       dados = Setor.query.all()
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
-    return redirect(url_for('setor.acessar'))
+    return redirect(url_for('setor.acessarSetor'))
 
   # # # PARÂMETROS DO RELATÓRIO
   titulo = 'LISTA DE SETORES'
@@ -180,4 +180,120 @@ def imprimir():
   ]
 
   response = imprimir_reportlab(titulo, subtitulo, lista, dados)
+  return response
+
+  # # #    TABELA 2    # # # # # # # # # # # # # # # # # # #
+@setor.route('/setor/acessarUsuario/<int:id_super>/<string:nome_super>', methods=['GET', 'POST'])
+@login_required
+def acessarUsuario(id_super, nome_super):
+
+  print('{} {}'.format(id_super, nome_super))
+
+  if not current_user.is_authenticated:
+    flash('Usuário não autorizado!', 'info')
+    return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
+
+  form = ListaUsuarioSetorForm()
+
+  title1='Lista de Usuários Por Setor'
+  title2='Lista de Usuários'
+
+  try:
+    por_page1 = 5
+    page1 = request.form.get('page1', 1, type=int)
+    # print('{} {}'.format('Pagina: ', page1))
+    dados1 = Setor.query.filter(Setor.usuarios_do_setor.any(id=id_super)).paginate(page=page1, \
+     per_page=por_page1)
+
+    por_page2 = 5
+    page2 = request.form.get('page2', 1, type=int)
+    dados2 = Setor.query.paginate(page=page2, per_page=por_page2)
+
+    return render_template('lista_usuario_setor.html', title1=title1, title2=title2, id_super=id_super, \
+     nome_super=nome_super, dados1=dados1, dados2=dados2, form=form)
+
+  except Exception as e:
+    flash('Falha no aplicativo! ' + str(e), 'danger')
+    return redirect(url_for('auth.logout'))
+
+
+@setor.route('/setor/adicionarSetor/<int:id_data>/<int:id_super>/<string:nome_super>', methods=['GET', 'POST'])
+@login_required
+def adicionarSetor(id_data, id_super, nome_super):
+
+  if not current_user.is_authenticated:
+    flash('Usuário não autorizado!', 'info')
+    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+
+  try:
+    dado = Usuario.query.get(id_super)
+    dado1 = Setor.query.get(id_data)
+
+    # if dado.has_role(dado1.nome):
+    #   flash('Registro já cadastrado!', 'danger')
+    #   return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+
+    dado1.usuarios_do_setor.append(dado)
+    db.session.commit()
+    flash('Registro foi incluído com sucesso!', 'success')
+    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+  except IntegrityError:
+    db.session.rollback()
+    flash('Registro já cadastrado! ', 'danger')
+    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+  except Exception as e:
+    flash('Falha no aplicativo! ' + str(e), 'danger')
+    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+
+
+@setor.route("/setor/excluirUsuarioSetor/<int:id_data>/<int:id_super>/<string:nome_super>", methods=['GET', 'POST'])
+@login_required
+def excluirUsuarioSetor(id_data, id_super, nome_super):
+
+  if not current_user.is_authenticated:
+    flash('Usuário não autorizado!', 'info')
+    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+
+  try:
+    dado = Usuario.query.get(id_super)
+    dado1 = Setor.query.get(id_data)
+    if dado:
+      # exclui somente da tabela de associação
+      dado1.usuarios_do_setor.remove(dado)
+      db.session.commit()
+      flash('Registro foi excluido com sucesso!', 'success')
+      return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+    else:
+      flash('Falha na exclusão!', 'danger')
+      return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+  except Exception as e:
+    flash('Falha no aplicativo! ' + str(e), 'danger')
+    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+
+
+@setor.route('/setor/imprimir2/<int:id_super>/<string:nome_super>', methods=['GET'])
+@login_required
+def imprimir2(id_super, nome_super):
+
+  from app.principal.relatorios import imprimir_reportlab
+
+  # LÊ BASE DE DADOS
+  try:
+    dados = Setor.query.filter(Setor.usuarios_do_setor).all()
+  except Exception as e:
+    flash('Falha no aplicativo! ' + str(e), 'danger')
+    return redirect(url_for('setor.acessarUsuario' , id_super=id_super, nome_super=nome_super))
+
+  if dados:
+    # # # PARÂMETROS DO RELATÓRIO
+    titulo = 'LISTA DE GRUPOS POR CONTA'
+    subtitulo = 'Conta: ' + nome_super
+    lista = [
+      ['ID', 'row.id', 50, 80],
+      ['NOME', 'row.nome', 100, 300],
+    ]
+    response = imprimir_reportlab(titulo, subtitulo, lista, dados)
+  else:
+    response = None
+
   return response

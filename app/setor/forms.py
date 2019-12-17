@@ -77,3 +77,6 @@ class AlteraForm(FlaskForm):
   #     dado = Setor.query.filter_by(nome=nome.data).first()
   #     if dado:
   #       raise ValidationError('Nome já registrado. Por favor, escolha um nome diferente.')
+
+class ListaUsuarioSetorForm(FlaskForm):
+  hiden = StringField('')

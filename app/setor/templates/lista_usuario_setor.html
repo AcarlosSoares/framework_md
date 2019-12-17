@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="col s12">
+
+  <!--------------------------- LISTA DA TABELAS DE ASSOCIAÇÃO -------------------------->
+
+  <!-- Título  -->
+  <h4>
+    {{ title1 }}
+  </h4>
+
+  <div class="row">
+
+    <!-- Sub-Título  -->
+    <div class="col s6 left-align">
+      <h5>
+        Setor: {{ nome_super }}
+      </h5><br>
+    </div>
+
+    <div class="col s6 right-align">
+      <!-- Botão Voltar -->
+      <a href="{{ url_for('setor.acessarSetor') }}" class="waves-effect waves-light btn black-text">
+        <i class="material-icons left white-text">arrow_back</i>Voltar
+      </a>
+    </div>
+
+  </div>
+
+  <!----------------------- LISTA DA TABELA 2 -------------------------->
+  <div class="row">
+    <div class="col s6 left-align">
+
+      <!-- Painel de Ordenação e Pesquisa -->
+      <form action="{{ url_for('setor.acessarSetor', id_super=id_super, nome_super=nome_super) }}" method="POST">
+        {{ form.csrf_token }}
+
+        <!-- Painel Paginação -->
+        <div class="row">
+          <div class="col s6 left-align">
+            {% for page_num2 in dados2.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+              {% if page_num2 %}
+                {% if dados2.page == page_num2 %}
+                  <input class="waves-effect waves-light btn" name="page2" type="submit" value={{ page_num2 }} />
+                {% else %}
+                  <input class="waves-effect waves-light btn teal lighten-4" name="page2" type="submit" value={{ page_num2 }} />
+                {% endif %}
+              {% else %}
+                ...
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Tabela de Listagem dos Dados -->
+      <table style="width:100%" class="table table-sm bg-light table-bordered" cellspacing="0">
+
+        <!-- Cabeçalho da Tabela -->
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-center" style="width: 30px">Seq</th>
+            <th class="text-center" style="width: 150px">Sigla</th>
+            <th class="text-center" style="width: 350px">Nome</th>
+            <th class="text-center center-align" style="width: 60px">Ação</th>
+          </tr>
+        </thead>
+
+        <!-- Detalhe da Tabela -->
+        <tbody>
+          {% for dado in dados2.items %}
+
+            <tr>
+              <td style="vertical-align:middle">{{ dado.id }}</td>
+              <td style="vertical-align:middle">{{ dado.sigla }}</td>
+              <td style="vertical-align:middle">{{ dado.nome }}</td>
+              <td class="text-center center-align">
+
+                <!-- Botão Adicionar -->
+                <a href="{{ url_for('setor.adicionarSetor', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm" value="Adicionar" aria-label="Adicionar" aria-pressed="true" alt="Adicionar" title="Adicionar">
+                  <i class="material-icons cor-verde" style="vertical-align:middle;">add</i>
+                </a>
+
+              </td>
+            </tr>
+
+          {% endfor  %}
+        </tbody>
+      </table>
+    </div>
+
+    <!----------------------- LISTA DA TABELA 1 -------------------------->
+    <div class="col s6 right-align">
+
+      <!-- Painel de Ordenação e Pesquisa -->
+      <form action="{{ url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super) }}" method="POST">
+        {{ form.csrf_token }}
+
+        <!-- Painel Paginação e Botões Imprimir -->
+        <div class="row">
+          <div class="col s6 left-align">
+            {% for page_num in dados1.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+              {% if page_num %}
+                {% if dados1.page == page_num %}
+                  <input class="waves-effect waves-light btn" name="page1" type="submit" value={{ page_num }} />
+                {% else %}
+                  <input class="waves-effect waves-light btn teal lighten-4" name="page1" type="submit" value={{ page_num }} />
+                {% endif %}
+              {% else %}
+                ...
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          <div class="col s6 right-align">
+          <!-- Botão Imprimir -->
+            <a href="{{ url_for('setor.imprimir2', id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm float-sm-right" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
+              <i class="material-icons cor-marrom">print</i>
+            </a>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Tabela de Listagem dos Dados -->
+      <table style="width:100%" class="table table-sm bg-light table-bordered" cellspacing="0">
+
+        <!-- Cabeçalho da Tabela -->
+        <thead class="thead-dark">
+          <tr>
+            <th class="text-center" style="width: 30px">Seq</th>
+            <th class="text-center" style="width: 500px">Usuários Por Setor</th>
+            <th class="text-center center-align" style="width: 60px">Ação</th>
+          </tr>
+        </thead>
+
+        <!-- Detalhe da Tabela -->
+        <tbody>
+          {% for dado in dados1.items %}
+
+            <tr>
+              <td style="vertical-align:middle">{{ dado.id }}</td>
+              <td style="vertical-align:middle">{{ dado.nomecompleto }}</td>
+              <td class="text-center center-align">
+
+                <!-- Botão Excluir -->
+                <a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#excluirModal{{ dado.id }}">
+                  <i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
+                </a>
+
+              </td>
+            </tr>
+
+            <!-- Modal Excluir Dados -->
+
+            <div id="excluirModal{{ dado.id }}" class="modal">
+            <div class="modal-content left-align">
+              <h4>Excluir Registro</h4>
+              <p>Confirma a exclusão: {{ dado.nomecompleto }}? </p>
+            </div>
+            <div class="modal-footer">
+              <a href="{{ url_for('setor.excluirUsuarioSetor', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="modal-close waves-effect waves-green btn-flat">Sim</a>
+              <a href="#!" class="modal-close waves-effect waves-green btn-flat">Não</a>
+            </div>
+            </div>
+
+            <!-- Fim Modal Excluir Dados -->
+
+          {% endfor  %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

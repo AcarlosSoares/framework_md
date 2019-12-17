@@ -108,4 +108,5 @@ class Setor(db.Model):
   cod_setor = db.Column("cd_setor_set", db.String(4))
   sigla = db.Column("ds_sigla_set", db.String(10))
   nome = db.Column("ds_nome_set", db.String(45))
+  usuarios_do_setor = db.relationship('Usuario', backref='setor', lazy=True)
 
