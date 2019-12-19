@@ -62,8 +62,8 @@
         <thead class="thead-dark">
           <tr>
             <th class="text-center" style="width: 30px">Seq</th>
-            <th class="text-center" style="width: 150px">Sigla</th>
             <th class="text-center" style="width: 350px">Nome</th>
+            <th class="text-center" style="width: 150px">Nome de Guerra</th>
             <th class="text-center center-align" style="width: 60px">Ação</th>
           </tr>
         </thead>
@@ -74,8 +74,8 @@
 
             <tr>
               <td style="vertical-align:middle">{{ dado.id }}</td>
-              <td style="vertical-align:middle">{{ dado.sigla }}</td>
-              <td style="vertical-align:middle">{{ dado.nome }}</td>
+              <td style="vertical-align:middle">{{ dado.nomecompleto }}</td>
+              <td style="vertical-align:middle">{{ dado.nomeguerra }}</td>
               <td class="text-center center-align">
 
                 <!-- Botão Adicionar -->
@@ -131,7 +131,8 @@
         <thead class="thead-dark">
           <tr>
             <th class="text-center" style="width: 30px">Seq</th>
-            <th class="text-center" style="width: 500px">Usuários Por Setor</th>
+            <th class="text-center" style="width: 350px">Nome</th>
+            <th class="text-center" style="width: 150px">Nome de Guerra</th>
             <th class="text-center center-align" style="width: 60px">Ação</th>
           </tr>
         </thead>
@@ -143,6 +144,7 @@
             <tr>
               <td style="vertical-align:middle">{{ dado.id }}</td>
               <td style="vertical-align:middle">{{ dado.nomecompleto }}</td>
+              <td style="vertical-align:middle">{{ dado.nomeguerra }}</td>
               <td class="text-center center-align">
 
                 <!-- Botão Excluir -->

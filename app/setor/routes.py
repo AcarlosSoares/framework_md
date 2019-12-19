@@ -2,7 +2,7 @@ from flask import (render_template, url_for, flash, redirect, request, abort, Bl
 from flask_login import current_user, login_required
 from sqlalchemy import desc, asc, text
 from app import db
-from app.models.models import Setor
+from app.models.models import Setor, Usuario
 from app.setor.forms import ListaForm, IncluiForm, AlteraForm, ListaUsuarioSetorForm
 import os
 
@@ -115,7 +115,6 @@ def alterar(id_data):
   if request.method == 'GET':
     try:
       dado = Setor.query.get(id_data)
-      # form.seq.data = id_data
       form.cod_empresa.data = dado.cod_empresa
       form.cod_diretoria.data = dado.cod_diretoria
       form.cod_setor.data = dado.cod_setor
@@ -202,12 +201,16 @@ def acessarUsuario(id_super, nome_super):
     por_page1 = 5
     page1 = request.form.get('page1', 1, type=int)
     # print('{} {}'.format('Pagina: ', page1))
-    dados1 = Setor.query.filter(Setor.usuarios_do_setor.any(id=id_super)).paginate(page=page1, \
+    # dados1 = Usuario.query.filter(Usuario.id==id_super).paginate(page=page1, \
+    #  per_page=por_page1)
+    dados1 = Usuario.query.filter_by(id=id_super).first().paginate(page=page1, \
      per_page=por_page1)
+    # dados1 = Usuario.query.get(id_super).paginate(page=page1, \
+    #  per_page=por_page1)
 
     por_page2 = 5
     page2 = request.form.get('page2', 1, type=int)
-    dados2 = Setor.query.paginate(page=page2, per_page=por_page2)
+    dados2 = Usuario.query.paginate(page=page2, per_page=por_page2)
 
     return render_template('lista_usuario_setor.html', title1=title1, title2=title2, id_super=id_super, \
      nome_super=nome_super, dados1=dados1, dados2=dados2, form=form)
@@ -226,24 +229,34 @@ def adicionarSetor(id_data, id_super, nome_super):
     return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
 
   try:
-    dado = Usuario.query.get(id_super)
-    dado1 = Setor.query.get(id_data)
+    print('{} - {}'.format('id_data', id_data))
+    print('{} - {}'.format('id_super', id_super))
+    # dado = Usuario.query.get(id_super)
+    # dado1 = Setor.query.get(id_data)
 
     # if dado.has_role(dado1.nome):
     #   flash('Registro já cadastrado!', 'danger')
     #   return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
 
-    dado1.usuarios_do_setor.append(dado)
+    dado = Usuario.query.get(id_super)
+    print(dado.nomecompleto)
+    dado.setor_id = id_data
     db.session.commit()
+
+
+
+
+    # dado1.setor_id = .append(dado)
+    # db.session.commit()
     flash('Registro foi incluído com sucesso!', 'success')
-    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+    return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
   except IntegrityError:
     db.session.rollback()
     flash('Registro já cadastrado! ', 'danger')
-    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+    return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
-    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+    return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
 
 
 @setor.route("/setor/excluirUsuarioSetor/<int:id_data>/<int:id_super>/<string:nome_super>", methods=['GET', 'POST'])
