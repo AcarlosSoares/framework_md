@@ -203,7 +203,7 @@ def acessarUsuario(id_super, nome_super):
     # print('{} {}'.format('Pagina: ', page1))
     # dados1 = Usuario.query.filter(Usuario.id==id_super).paginate(page=page1, \
     #  per_page=por_page1)
-    dados1 = Usuario.query.filter_by(id=id_super).first().paginate(page=page1, \
+    dados1 = Usuario.query.filter_by(id=id_super).paginate(page=page1, \
      per_page=por_page1)
     # dados1 = Usuario.query.get(id_super).paginate(page=page1, \
     #  per_page=por_page1)
