@@ -1,6 +1,7 @@
 from flask import (render_template, url_for, flash, redirect, request, abort, Blueprint, make_response)
 from flask_login import current_user, login_required
 from sqlalchemy import desc, asc, text
+from sqlalchemy.exc import IntegrityError
 from app import db
 from app.models.models import Setor, Usuario
 from app.setor.forms import ListaForm, IncluiForm, AlteraForm, ListaUsuarioSetorForm
@@ -186,34 +187,45 @@ def imprimir():
 @login_required
 def acessarUsuario(id_super, nome_super):
 
-  print('{} {}'.format(id_super, nome_super))
-
   if not current_user.is_authenticated:
     flash('Usuário não autorizado!', 'info')
     return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
 
   form = ListaUsuarioSetorForm()
 
+  ordenarpor = request.form.get('ordenarpor')
+  ordem = request.form.get('ordem')
+  pesquisarpor = request.form.get('pesquisarpor')
+
+  limpar = request.form.get('submit_limpar')
+  if limpar:
+    form.ordenarpor.data = 'usuario_usu.id_usuario'
+    form.ordenarpor.data = 'ASC'
+    form.ordenarpor.data = None
+    return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
+
   title1='Lista de Usuários Por Setor'
   title2='Lista de Usuários'
 
   try:
+    print(id_super)
     por_page1 = 5
     page1 = request.form.get('page1', 1, type=int)
-    # print('{} {}'.format('Pagina: ', page1))
-    # dados1 = Usuario.query.filter(Usuario.id==id_super).paginate(page=page1, \
-    #  per_page=por_page1)
-    dados1 = Usuario.query.filter_by(id=id_super).paginate(page=page1, \
-     per_page=por_page1)
-    # dados1 = Usuario.query.get(id_super).paginate(page=page1, \
-    #  per_page=por_page1)
+    dados1 = Usuario.query.filter_by(setor_id=id_super).paginate(page=page1, per_page=por_page1)
 
     por_page2 = 5
     page2 = request.form.get('page2', 1, type=int)
-    dados2 = Usuario.query.paginate(page=page2, per_page=por_page2)
+    if ordenarpor and ordem and pesquisarpor:
+      order_column = text(ordenarpor + ' ' + ordem)
+      filter_column = text(ordenarpor + ' LIKE ' + "'%" + pesquisarpor + "%'")
+      dados2 = Usuario.query.order_by(order_column).filter(filter_column).paginate(page=page2, per_page=por_page2)
+    elif ordenarpor and ordem:
+      order_column = text(ordenarpor + ' ' + ordem)
+      dados2 = Usuario.query.order_by(order_column).paginate(page=page2, per_page=por_page2)
+    else:
+      dados2 = Usuario.query.paginate(page=page2, per_page=por_page2)
 
-    return render_template('lista_usuario_setor.html', title1=title1, title2=title2, id_super=id_super, \
-     nome_super=nome_super, dados1=dados1, dados2=dados2, form=form)
+    return render_template('lista_usuario_setor.html', title1=title1, title2=title2, id_super=id_super, nome_super=nome_super, dados1=dados1, dados2=dados2, form=form)
 
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
@@ -229,27 +241,21 @@ def adicionarSetor(id_data, id_super, nome_super):
     return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
 
   try:
-    print('{} - {}'.format('id_data', id_data))
-    print('{} - {}'.format('id_super', id_super))
-    # dado = Usuario.query.get(id_super)
-    # dado1 = Setor.query.get(id_data)
 
-    # if dado.has_role(dado1.nome):
-    #   flash('Registro já cadastrado!', 'danger')
-    #   return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+    dado = Usuario.query.get(id_data)
 
-    dado = Usuario.query.get(id_super)
-    print(dado.nomecompleto)
-    dado.setor_id = id_data
-    db.session.commit()
+    if dado.has_role(id_super):
+      flash('Registro já cadastrado!', 'danger')
+      return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
 
-
-
-
-    # dado1.setor_id = .append(dado)
-    # db.session.commit()
-    flash('Registro foi incluído com sucesso!', 'success')
-    return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
+    if dado:
+      dado.setor_id = id_super
+      db.session.commit()
+      flash('Registro foi adicionado ao setor com sucesso!', 'success')
+      return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
+    else:
+      flash('Falha na adiçao do usuário!', 'danger')
+      return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
   except IntegrityError:
     db.session.rollback()
     flash('Registro já cadastrado! ', 'danger')
@@ -268,20 +274,20 @@ def excluirUsuarioSetor(id_data, id_super, nome_super):
     return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
 
   try:
-    dado = Usuario.query.get(id_super)
-    dado1 = Setor.query.get(id_data)
+
+    dado = Usuario.query.get(id_data)
+
     if dado:
-      # exclui somente da tabela de associação
-      dado1.usuarios_do_setor.remove(dado)
+      dado.setor_id = None
       db.session.commit()
-      flash('Registro foi excluido com sucesso!', 'success')
-      return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+      flash('Registro foi excluido do setor com sucesso!', 'success')
+      return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
     else:
       flash('Falha na exclusão!', 'danger')
-      return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+      return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
-    return redirect(url_for('conta.acessarGrupo', id_super=id_super, nome_super=nome_super))
+    return redirect(url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super))
 
 
 @setor.route('/setor/imprimir2/<int:id_super>/<string:nome_super>', methods=['GET'])
@@ -292,18 +298,18 @@ def imprimir2(id_super, nome_super):
 
   # LÊ BASE DE DADOS
   try:
-    dados = Setor.query.filter(Setor.usuarios_do_setor).all()
+    dados = Usuario.query.filter_by(setor_id=id_super)
   except Exception as e:
     flash('Falha no aplicativo! ' + str(e), 'danger')
     return redirect(url_for('setor.acessarUsuario' , id_super=id_super, nome_super=nome_super))
 
   if dados:
     # # # PARÂMETROS DO RELATÓRIO
-    titulo = 'LISTA DE GRUPOS POR CONTA'
-    subtitulo = 'Conta: ' + nome_super
+    titulo = 'LISTA DE USUÁRIOS POR SETOR'
+    subtitulo = 'Setor: ' + nome_super
     lista = [
       ['ID', 'row.id', 50, 80],
-      ['NOME', 'row.nome', 100, 300],
+      ['NOME', 'row.nomecompleto', 100, 300],
     ]
     response = imprimir_reportlab(titulo, subtitulo, lista, dados)
   else:

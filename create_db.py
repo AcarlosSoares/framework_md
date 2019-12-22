@@ -91,16 +91,21 @@ db.session.commit()
 # Cadastra Conta
 conta1 = Conta(usuario="ACarlos", email="acls.soares@gmail.com", senha="$12$rWMjGE6LhXBDtuqSRzw3LubNgj/SZ/A0zLLaGgtYdDrFO8lbvJWcy")
 conta2 = Conta(usuario="Francisca", email="kita@hotmail.com", senha="$12$rWMjGE6LhXBDtuqSRzw3LubNgj/SZ/A0zLLaGgtYdDrFO8lbvJWcy")
-conta1.grupos.append(g1)
-conta2.grupos.append(g1)
+conta3 = Conta(usuario="Pedro", email="pedro@hotmail.com", senha="$12$rWMjGE6LhXBDtuqSRzw3LubNgj/SZ/A0zLLaGgtYdDrFO8lbvJWcy")
+conta1.grupos.append(g3)
+conta2.grupos.append(g3)
+conta3.grupos.append(g4)
 db.session.add(conta1)
 db.session.add(conta2)
+db.session.add(conta3)
 
 # Cadastra Usuario
 usuario1 = Usuario(nomecompleto="Antonio Carlos", nomeguerra="ACarlos", datanascimento="1961-10-26 00:00:00", matricula="19917", cpf="20366060344", foto="default.jpg", conta=conta1, setor=s3)
 usuario2 = Usuario(nomecompleto="Francisca Maria", nomeguerra="Francisca", datanascimento="1961-09-23 00:00:00", matricula="18715", cpf="11111111111", foto="default.jpg", conta=conta2, setor=s3)
+usuario3 = Usuario(nomecompleto="Pedro Cabral", nomeguerra="Pedro", datanascimento="1961-09-23 00:00:00", matricula="18715", cpf="11111111111", foto="default.jpg", conta=conta3, setor=s4)
 db.session.add(usuario1)
 db.session.add(usuario2)
+db.session.add(usuario3)
 
 db.session.commit()
 

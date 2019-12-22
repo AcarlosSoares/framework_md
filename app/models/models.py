@@ -39,48 +39,48 @@ class Grupo(db.Model):
 
 class Conta(db.Model, UserMixin):
 
-    __tablename__ = 'conta_con'
+  __tablename__ = 'conta_con'
 
-    id = db.Column("id_conta", db.Integer, primary_key=True)
-    usuario = db.Column("ds_usuario_con", db.String(20), unique=True, nullable=False)
-    email = db.Column("ds_email_con", db.String(120), unique=True, nullable=False)
-    senha = db.Column("ds_senha_con", db.String(60), nullable=False)
-    usuarios = db.relationship('Usuario', backref='conta', uselist=False, lazy='joined')
-    grupos = db.relationship('Grupo', secondary=conta_grupo)
+  id = db.Column("id_conta", db.Integer, primary_key=True)
+  usuario = db.Column("ds_usuario_con", db.String(20), unique=True, nullable=False)
+  email = db.Column("ds_email_con", db.String(120), unique=True, nullable=False)
+  senha = db.Column("ds_senha_con", db.String(60), nullable=False)
+  usuarios = db.relationship('Usuario', backref='conta', uselist=False, lazy='joined')
+  grupos = db.relationship('Grupo', secondary=conta_grupo)
 
-    def __init__(self, usuario="", senha="", email=""):
-      try:
-        default = Grupo.query.filter_by(nome="Administrador").one()
-        self.roles.append(default)
-        self.usuario = usuario
-        self.senha = senha
-        self.email = email
-      except:
-        self.usuario = usuario
-        self.senha = senha
-        self.email = email
+  def __init__(self, usuario="", senha="", email=""):
+    try:
+      default = Grupo.query.filter_by(nome="Administrador").one()
+      self.roles.append(default)
+      self.usuario = usuario
+      self.senha = senha
+      self.email = email
+    except:
+      self.usuario = usuario
+      self.senha = senha
+      self.email = email
 
-    def __repr__(self):
-      return f"Conta('{self.usuario}', '{self.email}')"
+  def __repr__(self):
+    return f"Conta('{self.usuario}', '{self.email}')"
 
-    def get_reset_token(self, expires_sec=1800):
-      s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-      return s.dumps({'conta_id': self.id}).decode('utf-8')
+  def get_reset_token(self, expires_sec=1800):
+    s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
+    return s.dumps({'conta_id': self.id}).decode('utf-8')
 
-    @staticmethod
-    def verify_reset_token(token):
-      s = Serializer(current_app.config['SECRET_KEY'])
-      try:
-        conta_id = s.loads(token)['conta_id']
-      except:
-        return None
-      return Conta.query.get(conta_id)
+  @staticmethod
+  def verify_reset_token(token):
+    s = Serializer(current_app.config['SECRET_KEY'])
+    try:
+      conta_id = s.loads(token)['conta_id']
+    except:
+      return None
+    return Conta.query.get(conta_id)
 
-    def has_role(self, nome):
-      for grupo in self.grupos:
-        if grupo.nome == nome:
-          return True
-      return False
+  def has_role(self, nome):
+    for grupo in self.grupos:
+      if grupo.nome == nome:
+        return True
+    return False
 
 
 class Usuario(db.Model):
@@ -94,9 +94,13 @@ class Usuario(db.Model):
   matricula = db.Column("ds_matricula_usu", db.String(50))
   cpf = db.Column("ds_cpf_usu", db.String(50))
   foto = db.Column("ds_foto_usu", db.String(20), default='default.jpg')
-  setor_id = db.Column(db.Integer, db.ForeignKey('setor_set.id_setor'), unique=True)
+  setor_id = db.Column(db.Integer, db.ForeignKey('setor_set.id_setor'), unique=False)
   conta_id = db.Column(db.Integer, db.ForeignKey('conta_con.id_conta'), unique=True)
 
+  def has_role(self, nome):
+    if self.setor_id == nome:
+      return True
+    return False
 
 class Setor(db.Model):
 

@@ -35,9 +35,19 @@
 					{{ form.pesquisarpor.label }}
 		   	</div>
 
-		    <div class=" input-field col s4 right-align">
-					<a class="waves-effect waves-light btn white-text"><i class="material-icons left">send</i>{{ form.submit_enviar }}</a>
-			    <a class="waves-effect waves-light btn"><i class="material-icons left">clear_all</i>{{ form.submit_limpar }}</a>
+		    <div class=" input-field col s4 left-align">
+<!-- 					<a class="waves-effect waves-light btn white-text">
+						<i class="material-icons left">send</i>{{ form.submit_enviar }}
+					</a>
+			    <a class="waves-effect waves-light btn">
+			    	<i class="material-icons left">clear_all</i>{{ form.submit_limpar }}
+			    </a> -->
+          <button class="waves-effect waves-light btn" type="submit" name="submit_enviar" value="Enviar" title="Enviar">
+            <i class="material-icons">send</i>
+          </button>
+          <button class="waves-effect waves-light btn" type="submit" name="submit_limpar" value="Limpar" title="Limpar">
+            <i class="material-icons">clear_all</i>
+          </button>
 		   	</div>
 
 	  	</div>
@@ -49,11 +59,21 @@
 				<div class="col s6 left-align">
 					{% for page_num in dados.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 					  {% if page_num %}
-					    {% if dados.page == page_num %}
+
+<!-- 					    {% if dados.page == page_num %}
 					      <input class="waves-effect waves-light btn" name="page" type="submit" value={{ page_num }} />
 					    {% else %}
 					      <input class="waves-effect waves-light btn teal lighten-4" name="page" type="submit" value={{ page_num }} />
-					    {% endif %}
+					    {% endif %}		 -->
+
+              {% if dados.page == page_num %}
+                <button class="waves-effect waves-light btn teal" type="submit" name="page" value={{ page_num }}>{{ page_num }}
+                </button>
+              {% else %}
+                <button class="waves-effect waves-light btn teal lighten-3" type="submit" name="page" value={{ page_num }}>{{ page_num }}
+                </button>
+              {% endif %}
+
 					  {% else %}
 					    ...
 					  {% endif %}
@@ -123,14 +143,15 @@
 	          <!-- Modal Excluir Dados -->
 
 					  <div id="excluirModal{{ dado.id }}" class="modal">
-						<div class="modal-content left-align">
-						  <h4>Excluir Registro</h4>
-						  <p>Confirma a exclusão: {{ dado.sigla }}? </p>
-						</div>
-						<div class="modal-footer">
-						  <a href="{{ url_for('setor.excluir', id_data=dado.id) }}" class="modal-close waves-effect waves-green btn-flat">Sim</a>
-						  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Não</a>
-						</div>
+							<div class="modal-content left-align">
+							  <h4>Excluir Registro</h4>
+							  <h5>Confirma a exclusão? {{ dado.sigla }}</h5>
+							</div>
+							<div class="divider"></div>
+							<div class="modal-footer">
+							  <a href="{{ url_for('setor.excluir', id_data=dado.id) }}" class="modal-close waves-effect waves-green btn-flat"><h6>Sim</h6></a>
+							  <a href="#!" class="modal-close waves-effect waves-green btn-flat"><h6>Não</h6></a>
+							</div>
 					  </div>
 
 	          <!-- Fim Modal Excluir Dados -->

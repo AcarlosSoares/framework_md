@@ -101,3 +101,5 @@ class Setor(db.Model):
 
 # query = db.session.query(Usuario).filter(Usuario.matricula.like('199')).order_by(Usuario.id)
 
+f = Usuario.query.filter(id==3)
+f1 = Usuario.query.filter_by(id=3)

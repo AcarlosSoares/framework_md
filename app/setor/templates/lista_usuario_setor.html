@@ -21,9 +21,10 @@
 
     <div class="col s6 right-align">
       <!-- Botão Voltar -->
-      <a href="{{ url_for('setor.acessarSetor') }}" class="waves-effect waves-light btn black-text">
-        <i class="material-icons left white-text">arrow_back</i>Voltar
+      <a href="{{ url_for('setor.acessarSetor') }}" class="waves-effect waves-light btn" title="Voltar">
+        <i class="material-icons">arrow_back</i>
       </a>
+
     </div>
 
   </div>
@@ -32,8 +33,16 @@
   <div class="row">
     <div class="col s6 left-align">
 
+      <div class="row">
+        <div class="col s12 center-align">
+          <h5>Lista de Usuários</h5>
+        </div>
+      </div>
+
+      <div class="divider"></div><br>
+
       <!-- Painel de Ordenação e Pesquisa -->
-      <form action="{{ url_for('setor.acessarSetor', id_super=id_super, nome_super=nome_super) }}" method="POST">
+      <form action="{{ url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super) }}" method="POST">
         {{ form.csrf_token }}
 
         <!-- Painel Paginação -->
@@ -42,15 +51,82 @@
             {% for page_num2 in dados2.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
               {% if page_num2 %}
                 {% if dados2.page == page_num2 %}
-                  <input class="waves-effect waves-light btn" name="page2" type="submit" value={{ page_num2 }} />
+                  <button class="waves-effect waves-light btn teal" type="submit" name="page" value={{ page_num2 }}>{{ page_num2 }}
+                  </button>
                 {% else %}
-                  <input class="waves-effect waves-light btn teal lighten-4" name="page2" type="submit" value={{ page_num2 }} />
+                  <button class="waves-effect waves-light btn teal lighten-3" type="submit" name="page" value={{ page_num2 }}>{{ page_num2 }}
+                  </button>
                 {% endif %}
               {% else %}
                 ...
               {% endif %}
             {% endfor %}
           </div>
+
+          <div class="col s6 right-align">
+
+            <!-- Botão Modal Pesquisar -->
+            <a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#pesquisarModal" title="Ordenar/Filtrar">
+              <i class="material-icons" style="vertical-align:middle;">search</i>
+            </a>
+
+            <!-- Botão Limpar -->
+<!--             <a class="waves-effect waves-light btn" title="Limpar">
+              <i class="material-icons left">clear_all</i>{{ form.submit_limpar }}
+            </a>
+
+            <input class="waves-effect waves-light btn" id="submit_limpar" name="submit_limpar" type="submit" value="Limpar" title="Limpar"> -->
+
+            <button class="waves-effect waves-light btn" type="submit" name="submit_limpar" value="Limpar" title="Limpar">
+              <i class="material-icons">clear_all</i>
+            </button>
+
+          </div>
+
+          <!-- Modal Pesquisar Dados -->
+          <div id="pesquisarModal" class="modal">
+            <div class="card grey lighten-4">
+              <div class="card-content">
+
+                <div class="modal-content left-align">
+                  <h4>Pesquisar</h4>
+                </div>
+
+                <div class="row">
+
+                  <div class="col s6">
+                    <div class="row">
+                      <div class="input-field col s8">
+                        {{ form.ordenarpor }}
+                        {{ form.ordenarpor.label }}
+                      </div>
+                      <div class=" input-field col s4">
+                        {{ form.ordem }}
+                        {{ form.ordem.label }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="input-field col s6">
+                    {{ form.pesquisarpor }}
+                    {{ form.pesquisarpor.label }}
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <a class="waves-effect waves-green btn-flat -text">
+                <h6>{{ form.submit_enviar }}</h6>
+              </a>
+              <a href="#!" class="modal-close waves-effect waves-green btn-flat">
+                <h6>Fechar</h6>
+              </a>
+            </div>
+          </div>
+          <!-- Fim Modal Excluir Dados -->
         </div>
 
       </form>
@@ -89,10 +165,18 @@
           {% endfor  %}
         </tbody>
       </table>
-    </div>
 
+    </div>
     <!----------------------- LISTA DA TABELA 1 -------------------------->
     <div class="col s6 right-align">
+
+      <div class="row">
+        <div class="col s12 center-align">
+          <h5>Lista de Usuários por Setor</h5>
+        </div>
+      </div>
+
+      <div class="divider"></div><br>
 
       <!-- Painel de Ordenação e Pesquisa -->
       <form action="{{ url_for('setor.acessarUsuario', id_super=id_super, nome_super=nome_super) }}" method="POST">
@@ -104,9 +188,11 @@
             {% for page_num in dados1.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
               {% if page_num %}
                 {% if dados1.page == page_num %}
-                  <input class="waves-effect waves-light btn" name="page1" type="submit" value={{ page_num }} />
+                  <button class="waves-effect waves-light btn teal" type="submit" name="page" value={{ page_num }}>{{ page_num }}
+                  </button>
                 {% else %}
-                  <input class="waves-effect waves-light btn teal lighten-4" name="page1" type="submit" value={{ page_num }} />
+                  <button class="waves-effect waves-light btn teal lighten-3" type="submit" name="page" value={{ page_num }}>{{ page_num }}
+                  </button>
                 {% endif %}
               {% else %}
                 ...
@@ -114,8 +200,8 @@
             {% endfor %}
           </div>
 
-          <div class="col s6 right-align">
           <!-- Botão Imprimir -->
+          <div class="col s6 right-align">
             <a href="{{ url_for('setor.imprimir2', id_super=id_super, nome_super=nome_super) }}" class="btn btn-ligth btn-sm float-sm-right" value="Imprimir" aria-label="Imprimir" aria-pressed="true" alt="Imprimir" title="Imprimir">
               <i class="material-icons cor-marrom">print</i>
             </a>
@@ -148,7 +234,7 @@
               <td class="text-center center-align">
 
                 <!-- Botão Excluir -->
-                <a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#excluirModal{{ dado.id }}">
+                <a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#excluirModal{{ dado.id }}" title="Excluir">
                   <i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
                 </a>
 
@@ -158,14 +244,15 @@
             <!-- Modal Excluir Dados -->
 
             <div id="excluirModal{{ dado.id }}" class="modal">
-            <div class="modal-content left-align">
-              <h4>Excluir Registro</h4>
-              <p>Confirma a exclusão: {{ dado.nomecompleto }}? </p>
-            </div>
-            <div class="modal-footer">
-              <a href="{{ url_for('setor.excluirUsuarioSetor', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="modal-close waves-effect waves-green btn-flat">Sim</a>
-              <a href="#!" class="modal-close waves-effect waves-green btn-flat">Não</a>
-            </div>
+              <div class="modal-content left-align">
+                <h4>Excluir Registro</h4>
+                <h5>Confirma a exclusão? {{ dado.nomecompleto }}</h5>
+              </div>
+              <div class="divider"></div>
+              <div class="modal-footer">
+                <a href="{{ url_for('setor.excluirUsuarioSetor', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="modal-close waves-effect waves-green btn-flat"><h6>Sim</h6></a>
+                <a href="#!" class="modal-close waves-effect waves-green btn-flat"><h6>Não</h6></a>
+              </div>
             </div>
 
             <!-- Fim Modal Excluir Dados -->

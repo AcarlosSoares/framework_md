@@ -33,6 +33,14 @@
 	<div class="row">
 		<div class="col s6 left-align">
 
+      <div class="row">
+        <div class="col s12 center-align">
+          <h5>Lista de Contas</h5>
+        </div>
+      </div>
+
+      <div class="divider"></div><br>
+
 			<!-- Painel de Ordenação e Pesquisa -->
 			<form action="{{ url_for('grupo.acessarConta', id_super=id_super, nome_super=nome_super) }}" method="POST">
 				{{ form.csrf_token }}
@@ -92,6 +100,14 @@
 
 		<!----------------------- LISTA DA TABELA 1 -------------------------->
 		<div class="col s6 right-align">
+
+      <div class="row">
+        <div class="col s12 center-align">
+          <h5>Lista de Contas por Grupo</h5>
+        </div>
+      </div>
+
+      <div class="divider"></div><br>
 
 			<!-- Painel de Ordenação e Pesquisa -->
 			<form action="{{ url_for('grupo.acessarConta', id_super=id_super, nome_super=nome_super) }}" method="POST">
@@ -155,14 +171,15 @@
 	          <!-- Modal Excluir Dados -->
 
 					  <div id="excluirModal{{ dado.id }}" class="modal">
-						<div class="modal-content left-align">
-						  <h4>Excluir Registro</h4>
-						  <p>Confirma a exclusão: {{ dado.usuario }}? </p>
-						</div>
-						<div class="modal-footer">
-						  <a href="{{ url_for('grupo.excluirContaPorGrupo', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="modal-close waves-effect waves-green btn-flat">Sim</a>
-						  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Não</a>
-						</div>
+							<div class="modal-content left-align">
+							  <h4>Excluir Registro</h4>
+							  <h5>Confirma a exclusão? {{ dado.usuario }}</h5>
+							</div>
+							<div class="divider"></div>
+							<div class="modal-footer">
+							  <a href="{{ url_for('grupo.excluirContaPorGrupo', id_data=dado.id, id_super=id_super, nome_super=nome_super) }}" class="modal-close waves-effect waves-green btn-flat"><h6>Sim</h6></a>
+							  <a href="#!" class="modal-close waves-effect waves-green btn-flat"><h6>Não</h6></a>
+							</div>
 					  </div>
 
 	          <!-- Fim Modal Excluir Dados -->

@@ -118,14 +118,15 @@
 	          <!-- Modal Excluir Dados -->
 
 					  <div id="excluirModal{{ dado.id }}" class="modal">
-						<div class="modal-content left-align">
-						  <h4>Excluir Registro</h4>
-						  <p>Confirma a exclusão: {{ dado.nome }}? </p>
-						</div>
-						<div class="modal-footer">
-						  <a href="{{ url_for('grupo.excluirGrupo', id_data=dado.id) }}" class="modal-close waves-effect waves-green btn-flat">Sim</a>
-						  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Não</a>
-						</div>
+							<div class="modal-content left-align">
+							  <h4>Excluir Registro</h4>
+							  <h5>Confirma a exclusão? {{ dado.nome }}</h5>
+							</div>
+							<div class="divider"></div>
+							<div class="modal-footer">
+							  <a href="{{ url_for('grupo.excluirGrupo', id_data=dado.id) }}" class="modal-close waves-effect waves-green btn-flat"><h6>Sim</h6></a>
+							  <a href="#!" class="modal-close waves-effect waves-green btn-flat"><h6>Não</h6></a>
+							</div>
 					  </div>
 
 	          <!-- Fim Modal Excluir Dados -->

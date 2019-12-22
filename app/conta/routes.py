@@ -1,6 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort, Blueprint, make_response
 from flask_login import current_user, login_required
 from sqlalchemy import desc, asc, text
+from sqlalchemy.exc import IntegrityError
 from app import db, bcrypt
 from app.auth.utils import save_picture
 from app.models.models import Conta, Usuario, Grupo

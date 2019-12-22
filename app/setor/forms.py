@@ -3,8 +3,9 @@ from wtforms import StringField, PasswordField, SubmitField, BooleanField, Integ
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from app.models.models import Setor
 
-ordenarpor_choices=[('setor_set.id_setor', 'Seq'), ('setor_set.ds_sigla_set', 'Sigla'), \
+ordenarporSetor_choices=[('setor_set.id_setor', 'Seq'), ('setor_set.ds_sigla_set', 'Sigla'), \
  ('setor_set.ds_nome_set', 'Nome')]
+ordenarporUsuario_choices=[('usuario_usu.id_usuario', 'Seq'), ('usuario_usu.ds_nome_completo_usu', 'Nome')]
 ordem_choices=[('ASC', 'Asc'), ('DESC', 'Desc')]
 
 def my_length_check(form, field):
@@ -26,7 +27,7 @@ def check(form, field):
       raise ValidationError('Sigla já registrada. Por favor, escolha uma sigla diferente.')
 
 class ListaForm(FlaskForm):
-  ordenarpor = SelectField('Ordenar Por', choices=ordenarpor_choices)
+  ordenarpor = SelectField('Ordenar Por', choices=ordenarporSetor_choices)
   ordem = SelectField('Ordem', choices=ordem_choices)
   pesquisarpor = StringField('Filtrar Por')
   submit_enviar = SubmitField('Enviar')
@@ -79,4 +80,8 @@ class AlteraForm(FlaskForm):
   #       raise ValidationError('Nome já registrado. Por favor, escolha um nome diferente.')
 
 class ListaUsuarioSetorForm(FlaskForm):
-  hiden = StringField('')
+  ordenarpor = SelectField('Ordenar Por', choices=ordenarporUsuario_choices)
+  ordem = SelectField('Ordem', choices=ordem_choices)
+  pesquisarpor = StringField('Filtrar Por')
+  submit_enviar = SubmitField('Enviar')
+  submit_limpar = SubmitField("Limpar")
