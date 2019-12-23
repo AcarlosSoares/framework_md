@@ -21,8 +21,8 @@
 
 		<div class="col s6 right-align">
 			<!-- Botão Voltar -->
-		  <a href="{{ url_for('conta.acessarConta') }}" class="waves-effect waves-light btn black-text">
-		  	<i class="material-icons left white-text">arrow_back</i>Voltar
+		  <a href="{{ url_for('conta.acessarConta') }}" class="waves-effect waves-light btn" title="Voltar">
+		  	<i class="material-icons">arrow_back</i>
 		  </a>
 		</div>
 
@@ -49,11 +49,15 @@
 					<div class="col s6 left-align">
 						{% for page_num2 in dados2.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 						  {% if page_num2 %}
-						    {% if dados2.page == page_num2 %}
-						      <input class="waves-effect waves-light btn" name="page2" type="submit" value={{ page_num2 }} />
-						    {% else %}
-						      <input class="waves-effect waves-light btn teal lighten-4" name="page2" type="submit" value={{ page_num2 }} />
-						    {% endif %}
+
+                {% if dados2.page == page_num2 %}
+                  <button class="waves-effect waves-light btn teal darken-1" type="submit" name="page2" value={{ page_num2 }}>{{ page_num2 }}
+                  </button>
+                {% else %}
+                  <button class="waves-effect waves-light btn teal lighten-3" type="submit" name="page2" value={{ page_num2 }}>{{ page_num2 }}
+                  </button>
+                {% endif %}
+
 						  {% else %}
 						    ...
 						  {% endif %}
@@ -117,11 +121,15 @@
 					<div class="col s6 left-align">
 						{% for page_num in dados1.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 						  {% if page_num %}
-						    {% if dados1.page == page_num %}
-						      <input class="waves-effect waves-light btn" name="page1" type="submit" value={{ page_num }} />
-						    {% else %}
-						      <input class="waves-effect waves-light btn teal lighten-4" name="page1" type="submit" value={{ page_num }} />
-						    {% endif %}
+
+                {% if dados1.page == page_num %}
+                  <button class="waves-effect waves-light btn teal darken-1" type="submit" name="page1" value={{ page_num }}>{{ page_num }}
+                  </button>
+                {% else %}
+                  <button class="waves-effect waves-light btn teal lighten-3" type="submit" name="page1" value={{ page_num }}>{{ page_num }}
+                  </button>
+                {% endif %}
+
 						  {% else %}
 								...
 						  {% endif %}

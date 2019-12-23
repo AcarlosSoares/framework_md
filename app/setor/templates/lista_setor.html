@@ -1,9 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<!-- fonte: https://material.io/resources/icons/?icon=add_box&style=outline -->
-<!-- fonte: http://google.github.io/material-design-icons/ -->
-
 	<div class="col s12">
 
 		<!-- Título  -->
@@ -60,14 +57,8 @@
 					{% for page_num in dados.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
 					  {% if page_num %}
 
-<!-- 					    {% if dados.page == page_num %}
-					      <input class="waves-effect waves-light btn" name="page" type="submit" value={{ page_num }} />
-					    {% else %}
-					      <input class="waves-effect waves-light btn teal lighten-4" name="page" type="submit" value={{ page_num }} />
-					    {% endif %}		 -->
-
               {% if dados.page == page_num %}
-                <button class="waves-effect waves-light btn teal" type="submit" name="page" value={{ page_num }}>{{ page_num }}
+                <button class="waves-effect waves-light btn teal darken-1" type="submit" name="page" value={{ page_num }}>{{ page_num }}
                 </button>
               {% else %}
                 <button class="waves-effect waves-light btn teal lighten-3" type="submit" name="page" value={{ page_num }}>{{ page_num }}

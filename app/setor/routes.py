@@ -182,7 +182,7 @@ def imprimir():
   response = imprimir_reportlab(titulo, subtitulo, lista, dados)
   return response
 
-  # # #    TABELA 2    # # # # # # # # # # # # # # # # # # #
+# # #    TABELA 2    # # # # # # # # # # # # # # # # # # #
 @setor.route('/setor/acessarUsuario/<int:id_super>/<string:nome_super>', methods=['GET', 'POST'])
 @login_required
 def acessarUsuario(id_super, nome_super):

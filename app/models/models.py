@@ -7,18 +7,18 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 
 
-conta_grupo = db.Table('conta_grupo_cgr',
-  db.Column('id_conta_cgr', db.Integer, db.ForeignKey('conta_con.id_conta'), primary_key=True),
-  db.Column('id_grupo_cgr', db.Integer, db.ForeignKey('grupo_gru.id_grupo'), primary_key=True)
-)
-
-
 @login_manager.user_loader
 def load_user(conta_id):
   try:
     return Conta.query.get(int(conta_id))
   except Exception as e:
     flash('Ocorreu uma falha no acesso ao banco de dados! ' + str(e), 'danger')
+
+
+conta_grupo = db.Table('conta_grupo_cgr',
+  db.Column('id_conta_cgr', db.Integer, db.ForeignKey('conta_con.id_conta'), primary_key=True),
+  db.Column('id_grupo_cgr', db.Integer, db.ForeignKey('grupo_gru.id_grupo'), primary_key=True)
+)
 
 
 class Grupo(db.Model):
@@ -101,6 +101,7 @@ class Usuario(db.Model):
     if self.setor_id == nome:
       return True
     return False
+
 
 class Setor(db.Model):
 
