@@ -32,15 +32,17 @@
 {% endmacro %}
 
 {% macro render_picture_field(field) %}
-  <div class="form-group">
-    {{ field.label() }}
+  <div class="input-field">
+    <div>
+      {{ field.label }}
+    </div>
     {{ field }}
     {% if field.errors %}
       {% for error in field.errors %}
         <span class="text-danger">{{ error }}</span></br>
       {% endfor %}
     {% endif %}
-  </div><br><br>
+  </div>
 {% endmacro %}
 
 {% macro render_radio_field(field) %}
@@ -79,9 +81,9 @@
 
 {% macro render_select_field2(field) %}
   <div class="input-field">
-    {{ field.label }}
     {% if field.errors %}
       {{ field }}
+      {{ field.label }}
       <div>
         {% for error in field.errors %}
           <span>{{ error }}</span>
@@ -89,6 +91,7 @@
       </div>
     {% else %}
       {{ field }}
+      {{ field.label }}
     {% endif %}
   </div>
 {% endmacro %}

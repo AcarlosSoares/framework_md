@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
         DataRequired(message='Informe seu endereço de email'),
         Email(message='Endereço do email inválido!')])
     senha = PasswordField('Senha', validators=[DataRequired()])
-    remember = BooleanField('Lembrar-me')
+    remember = BooleanField('Lembre-me')
     submit = SubmitField('Enviar')
 
 
@@ -24,7 +24,7 @@ class RegistrationForm(FlaskForm):
         Email(message='Endereço do email inválido!')])
     senha = PasswordField('Senha', validators=[
         DataRequired(message='Informe a sua senha!')])
-    confirm_senha = PasswordField('Confirme sua senha!', validators=[
+    confirm_senha = PasswordField('Confirme sua senha', validators=[
         DataRequired(message='Confirme a sua senha!'),
         EqualTo('senha')])
     submit = SubmitField('Enviar')
@@ -49,6 +49,11 @@ class UpdateAccountForm(FlaskForm):
         DataRequired(message='Informe seu endereço de email!'),
         Email(message='Endereço do email inválido!')])
     picture = FileField('Atualize a foto da sua conta', validators=[FileAllowed(['jpg', 'png'])])
+    senha = PasswordField('Nova Senha', validators=[
+        DataRequired(message='Informe a sua nova senha!')])
+    confirm_senha = PasswordField('Confirme sua nova senha', validators=[
+        DataRequired(message='Confirme a sua nova senha!'),
+        EqualTo('senha')])
     submit = SubmitField('Atualizar')
 
     def validate_usuario(self, usuario):

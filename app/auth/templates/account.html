@@ -64,6 +64,34 @@
               {% endif %}
           </div><br><br>
 
+          <div class="input-field">
+              {{ form.senha.label }}
+              {% if form.senha.errors %}
+                  {{ form.senha(class="invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.senha.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              {% else %}
+                  {{ form.senha }}
+              {% endif %}
+          </div>
+
+          <div class="input-field">
+              {{ form.confirm_senha.label }}
+              {% if form.confirm_senha.errors %}
+                  {{ form.confirm_senha(class="invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.confirm_senha.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              {% else %}
+                  {{ form.confirm_senha }}
+              {% endif %}
+          </div>
+
           <div class="form-group">
             {{ form.submit(class="waves-effect waves-light btn grey darken-1") }}
           </div>

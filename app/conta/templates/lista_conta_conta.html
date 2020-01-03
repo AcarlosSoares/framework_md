@@ -33,11 +33,11 @@
 		   	</div>
 
 		    <div class=" input-field col s4 left-align">
-          <button class="waves-effect waves-light btn" type="submit" name="submit_enviar" value="Enviar" title="Enviar">
-            <i class="material-icons">send</i>
+          <button class="waves-effect waves-light btn" type="submit" name="submit_enviar" value="Enviar" title="Enviar">ENVIAR
+            <i class="material-icons left">send</i>
           </button>
-          <button class="waves-effect waves-light btn" type="submit" name="submit_limpar" value="Limpar" title="Limpar">
-            <i class="material-icons">clear_all</i>
+          <button class="waves-effect waves-light btn" type="submit" name="submit_limpar" value="Limpar" title="Limpar">LIMPAR
+            <i class="material-icons left">clear_all</i>
           </button>
 		   	</div>
 
@@ -91,10 +91,10 @@
 					<tr>
 						<th class="text-center" style="width: 30px">Seq</th>
 						<th class="text-center" style="width: 100px">Usuário</th>
-						<th class="text-center" style="width: 200px">Nome</th>
+						<th class="text-center" style="width: 180px">Nome</th>
 						<th class="text-center" style="width: 100px">Nome Guerra</th>
-						<th class="text-center" style="width: 50px">Matricula</th>
-						<th class="text-center center-align" style="width: 120px">Ação</th>
+						<th class="text-center" style="width: 40px">Matricula</th>
+						<th class="text-center center-align" style="width: 150px">Ação</th>
 					</tr>
 				</thead>
 
@@ -110,18 +110,23 @@
 							<td style="vertical-align:middle">{{ dado.usuarios.matricula }}</td>
 							<td class="text-center center-align">
 
-								<!-- Botão Alterar -->
-								<a href="{{ url_for('conta.alterar', id_data=dado.id) }}" class="btn btn-ligth btn-sm" role="button" aria-label="Alterar" aria-pressed="true" title="Alterar">
+								<!-- Botão Alterar Dados -->
+								<a href="{{ url_for('conta.alterar', id_data=dado.id) }}" class="btn btn-ligth btn-sm" role="button" title="Alterar Dados">
 								  <i class="material-icons cor-azul" style="vertical-align:middle;">create</i>
 								</a>
 
+								<!-- Botão Alterar Senha -->
+								<a href="{{ url_for('conta.alterarsenha', id_data=dado.id) }}" class="btn btn-ligth btn-sm" role="button" title="Alterar Senha">
+								  <i class="material-icons" style="vertical-align:middle;">lock</i>
+								</a>
+
 								<!-- Botão Excluir -->
-								<a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#excluirModal{{ dado.id }}">
+								<a class="waves-effect waves-light btn modal-trigger" data-toggle="modal" href="#excluirModal{{ dado.id }}" title="Excluir">
 									<i class="material-icons cor-vermelho" style="vertical-align:middle;">delete</i>
 								</a>
 
 								<!-- Botão Grupos -->
-								<a href="{{ url_for('conta.acessarGrupo', id_super=dado.id, nome_super=dado.usuario) }}" class="btn btn-ligth btn-sm" role="button" aria-label="Alterar" aria-pressed="true" title="Grupos" >
+								<a href="{{ url_for('conta.acessarGrupo', id_super=dado.id, nome_super=dado.usuario) }}" class="btn btn-ligth btn-sm" role="button" title="Grupos" >
 								  <i class="material-icons cor-roxa" style="vertical-align:middle;">group_add</i>
 								</a>
 

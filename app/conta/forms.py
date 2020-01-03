@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField, HiddenField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from wtforms.fields.html5 import DateField
 from app.models.models import Conta, Usuario, Setor
@@ -29,14 +29,15 @@ class IncluiContaUsuarioForm(FlaskForm):
   nomecompleto = StringField('Nome', validators=[DataRequired(message='Nome deve ser prenchido!'),
    Length(min=3, max=80, message='Nome deve ter entre 3 e 80 caracteres!')])
   nomeguerra = StringField('Nome de Guerra', validators=[DataRequired(message='Nome deve ser prenchido!'), Length(min=3, max=20, message='Nome deve ter entre 3 e 20 caracteres!')])
-  # datanascimento = DateField('Data de Nascimento', validators=[DataRequired(message='Data deve ser prenchida!')], format=('%Y-%m-%d'))
-  datanascimento = DateField('Data de Nascimento', validators=[DataRequired(message='Data deve ser prenchida!')])
+  datanascimento = DateField('Data de Nascimento', validators=[DataRequired(message='Data deve ser prenchida!')], format=('%Y-%m-%d'))
   matricula = StringField('Matrícula', validators=[DataRequired(message='Nome deve ser prenchido!'),
    Length(min=5, max=11, message='Nome deve ter entre 5 e 11 caracteres!')])
   cpf = StringField('CPF', validators=[DataRequired(message='CPF deve ser prenchido!'),
    Length(min=11, max=11, message='CPF deve ter 11 caracteres!')])
   foto = FileField('Foto', validators=[FileAllowed(['jpg', 'png'])])
-  setor_id = SelectField('Setor', coerce=int, validators=[DataRequired(message='Setor deve ser prenchido!')])
+  setor_id = SelectField('Setor', coerce=int)
+  pesquisarpor = StringField('Pesquisar Setor', description='Pesquisar')
+  submitpesquisarpor = SubmitField('Ir')
   submit = SubmitField('Enviar')
 
   def validate_nomeusuario(self, nomeusuario):
@@ -46,15 +47,14 @@ class IncluiContaUsuarioForm(FlaskForm):
 
   def __init__(self):
     super(IncluiContaUsuarioForm, self).__init__()
-    self.setor_id.choices = [(k.id, k.nome) for k in Setor.query.all()]
+    # self.setor_id.choices = [(k.id, k.nome) for k in Setor.query.all()]
+    self.setor_id.choices = []
 
 
 class AlteraContaUsuarioForm(FlaskForm):
   nomeusuario = StringField('Usuário', validators=[DataRequired(message='Usuário deve ser prenchido!'),
    Length(min=3, max=20, message='Usuário deve ter entre 3 e 20 caracteres!')])
   email = StringField('Email', validators=[DataRequired(message='Email deve ser prenchido!')])
-  senha = PasswordField('Senha', validators=[DataRequired(message='Senha deve ser prenchido!')])
-  confirmasenha = PasswordField('Confirma Senha', validators=[DataRequired(message='Senha deve ser prenchido!'), EqualTo('senha')])
   nomecompleto = StringField('Nome', validators=[DataRequired(message='Nome deve ser prenchido!'),
    Length(min=3, max=80, message='Nome deve ter entre 3 e 80 caracteres!')])
   nomeguerra = StringField('Nome de Guerra', validators=[DataRequired(message='Nome deve ser prenchido!'),
@@ -65,7 +65,9 @@ class AlteraContaUsuarioForm(FlaskForm):
   cpf = StringField('CPF', validators=[DataRequired(message='CPF deve ser prenchido!'),
    Length(min=11, max=11, message='CPF deve ter 11 caracteres!')])
   foto = FileField('Foto', validators=[FileAllowed(['jpg', 'png'])])
-  setor_id = SelectField('Setor', coerce=int, validators=[DataRequired(message='Setor deve ser prenchido!')])
+  setor_id = SelectField('Setor', coerce=int)
+  pesquisarpor = StringField('Pesquisar Setor', description='Pesquisar')
+  submitpesquisarpor = SubmitField('Ir')
   submit = SubmitField('Enviar')
 
   # def validate_nomeusuario(self, nomeusuario):
@@ -75,8 +77,13 @@ class AlteraContaUsuarioForm(FlaskForm):
 
   def __init__(self):
     super(AlteraContaUsuarioForm, self).__init__()
-    self.setor_id.choices = [(k.id, k.nome) for k in Setor.query.all()]
+    # self.setor_id.choices = [(k.id, k.nome) for k in Setor.query.all()]
+    self.setor_id.choices = []
 
+class AlteraSenhaContaUsuarioForm(FlaskForm):
+  senha = PasswordField('Nova Senha', validators=[DataRequired(message='Senha deve ser prenchido!')])
+  confirmasenha = PasswordField('Confirma Nova Senha', validators=[DataRequired(message='Senha deve ser prenchido!'), EqualTo('senha')])
+  submit = SubmitField('Enviar')
 
 class ListaGrupoForm(FlaskForm):
   hiden = StringField('')

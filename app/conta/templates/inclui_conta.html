@@ -47,27 +47,39 @@
           <br><h4>Dados do Usuário da Conta</h4><br>
 
           <div class="row">
-              <div class="col s7">
-                {{ render_field(form.nomecompleto) }}
-              </div>
-              <div class="col s5">
-                {{ render_field(form.nomeguerra) }}
-              </div>
+            <div class="col s7">
+              {{ render_field(form.nomecompleto) }}
+            </div>
+            <div class="col s5">
+              {{ render_field(form.nomeguerra) }}
+            </div>
+          </div>
+          <div class="row">
               <div class="col s6">
                 {{ render_field_date(form.datanascimento) }}
               </div>
               <div class="col s6">
                 {{ render_field(form.matricula) }}
               </div>
+          </div>
+          <div class="row">
               <div class="col s4">
                 {{ render_field(form.cpf) }}
               </div>
               <div class="col s8">
                 {{ render_picture_field(form.foto) }}
               </div>
-              <div class="col s12">
-                {{ render_select_field2(form.setor_id) }}
-              </div>
+          </div>
+          <div class="row">
+            <div class="col s7">
+              {{ render_select_field2(form.setor_id) }}
+            </div>
+            <div class="col s3">
+              {{ render_field(form.pesquisarpor) }}
+            </div><br>
+            <div class="col s2">
+              {{ form.submitpesquisarpor(class="waves-effect waves-light btn") }}
+            </div>
           </div>
 
           <div class="row">

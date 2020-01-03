@@ -4,9 +4,9 @@ from sqlalchemy import desc, asc, text
 from sqlalchemy.exc import IntegrityError
 from app import db, bcrypt
 from app.auth.utils import save_picture
-from app.models.models import Conta, Usuario, Grupo
+from app.models.models import Conta, Usuario, Grupo, Setor
 from app.conta.forms import ListaContaUsuarioForm, IncluiContaUsuarioForm, AlteraContaUsuarioForm, \
- ListaGrupoForm
+ ListaGrupoForm, AlteraSenhaContaUsuarioForm
 import os
 
 conta = Blueprint('conta', __name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
@@ -71,13 +71,22 @@ def incluir():
 
   form = IncluiContaUsuarioForm()
 
-  if request.method == 'GET':
+  submitpesquisarpor = request.form.get('submitpesquisarpor')
+  submit = request.form.get('submit')
+
+  if form.pesquisarpor.data and submitpesquisarpor:
+    filter_column = text(' setor_set.ds_nome_set LIKE ' + "'%" + form.pesquisarpor.data + "%'")
+    form.setor_id.choices = [(k.id, k.nome) for k in Setor.query.filter(filter_column).all()]
+  else:
+    form.setor_id.choices = [(k.id, k.nome) for k in Setor.query.all()]
+
+  if request.method == 'GET' or submitpesquisarpor:
     return render_template('inclui_conta.html', title='Incluir Conta', form=form)
 
   if not form.validate_on_submit():
     return render_template('inclui_conta.html', title='Incluir Conta', form=form)
 
-  if form.validate_on_submit():
+  if form.validate_on_submit() and submit:
     try:
 
       if form.foto.data:
@@ -112,8 +121,7 @@ def incluir():
       return redirect(url_for('conta.acessarConta'))
 
 
-@conta.route("/conta/excluir/<int:id_data>", methods=['GET', 'POST'])
-@login_required
+@conta.route("/conta/excluir/<int:id_data>", methods=['POST'])
 @login_required
 def excluir(id_data):
 
@@ -146,13 +154,22 @@ def alterar(id_data):
 
   form = AlteraContaUsuarioForm()
 
-  if request.method == 'GET':
+  submitpesquisarpor = request.form.get('submitpesquisarpor')
+  submit = request.form.get('submit')
+
+  if form.pesquisarpor.data and submitpesquisarpor:
+    filter_column = text(' setor_set.ds_nome_set LIKE ' + "'%" + form.pesquisarpor.data + "%'")
+    form.setor_id.choices = [(k.id, k.nome) for k in Setor.query.filter(filter_column).all()]
+  else:
+    form.setor_id.choices = [(k.id, k.nome) for k in Setor.query.all()]
+
+  if request.method == 'GET' or submitpesquisarpor:
+
     try:
       dado = Conta.query.get(id_data)
       if (dado):
         form.nomeusuario.data = dado.usuario
         form.email.data = dado.email
-        form.senha.data = dado.senha
       if (dado.usuarios):
         form.nomecompleto.data = dado.usuarios.nomecompleto
         form.nomeguerra.data = dado.usuarios.nomeguerra
@@ -168,16 +185,17 @@ def alterar(id_data):
       else:
         foto = url_for('static', filename='profile_pics/' + 'default.jpg')
 
-      return render_template('altera_conta.html', title='Alterar Conta', form=form, foto=foto)
+      return render_template('altera_conta.html', id_data=dado.id, title='Alterar Conta', form=form, foto=foto)
 
     except Exception as e:
       flash('Falha no aplicativo! ' + str(e), 'danger')
       return redirect(url_for('conta.acessarConta'))
 
   if not form.validate_on_submit():
-    return render_template('altera_conta.html', title='Alterar Conta', form=form)
+    foto = url_for('static', filename='profile_pics/' + 'default.jpg')
+    return render_template('altera_conta.html', id_data=dado.id, title='Alterar Conta', form=form, foto=foto)
 
-  if form.validate_on_submit():
+  if form.validate_on_submit() and submit:
 
     if form.foto.data:
       picture_file = save_picture(form.foto.data)
@@ -185,11 +203,9 @@ def alterar(id_data):
       picture_file = "default.jpg"
 
     try:
-      hashed_senha = bcrypt.generate_password_hash(form.senha.data).decode('utf-8')
       dado = Conta.query.get(id_data)
       dado.usuario = form.nomeusuario.data
       dado.email = form.email.data
-      dado.senha = hashed_senha
       dado.usuarios.nomecompleto = form.nomecompleto.data
       dado.usuarios.nomeguerra = form.nomeguerra.data
       dado.usuarios.datanascimento = form.datanascimento.data
@@ -197,6 +213,50 @@ def alterar(id_data):
       dado.usuarios.cpf = form.cpf.data
       dado.usuarios.foto = picture_file
       dado.usuarios.setor_id = form.setor_id.data
+      db.session.commit()
+      flash('Registro foi alterado com sucesso!', 'success')
+      return redirect(url_for('conta.acessarConta'))
+    except Exception as e:
+      flash('Falha no aplicativo! ' + str(e), 'danger')
+      return redirect(url_for('conta.acessarConta'))
+
+
+@conta.route('/conta/alterarsenha/<int:id_data>', methods=['GET', 'POST'])
+@login_required
+def alterarsenha(id_data):
+
+  if not current_user.is_authenticated:
+    flash('Usuário não autorizado!', 'info')
+    return redirect(url_for('conta.acessarConta'))
+
+  form = AlteraSenhaContaUsuarioForm()
+
+  if request.method == 'GET':
+
+    try:
+      dado = Conta.query.get(id_data)
+
+      if dado.usuarios.foto:
+        foto = url_for('static', filename='profile_pics/' + dado.usuarios.foto)
+      else:
+        foto = url_for('static', filename='profile_pics/' + 'default.jpg')
+
+      return render_template('altera_senha.html', title='Alterar Senha', form=form, dado=dado, foto=foto)
+
+    except Exception as e:
+      flash('Falha no aplicativo! ' + str(e), 'danger')
+      return redirect(url_for('conta.acessarConta'))
+
+  if not form.validate_on_submit():
+    return render_template('altera_senha.html', title='Alterar Senha', form=form)
+
+  if form.validate_on_submit():
+
+    hashed_senha = bcrypt.generate_password_hash(form.senha.data).decode('utf-8')
+
+    try:
+      dado = Conta.query.get(id_data)
+      dado.senha = hashed_senha
       db.session.commit()
       flash('Registro foi alterado com sucesso!', 'success')
       return redirect(url_for('conta.acessarConta'))

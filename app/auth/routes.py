@@ -110,6 +110,9 @@ def account():
       current_user.usuario = form.usuario.data
       current_user.email = form.email.data
 
+      hashed_senha = bcrypt.generate_password_hash(form.senha.data).decode('utf-8')
+      current_user.senha = hashed_senha
+
       db.session.commit()
 
       flash('Sua conta foi atualizada!', 'success')
